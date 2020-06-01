@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Extension;
 
 namespace LeetCode
 {
@@ -12,39 +14,26 @@ namespace LeetCode
             var solution = new Solution();
             while (true)
             {
-                //int input = int.Parse(Console.ReadLine());
-                string input = Console.ReadLine();
+                int input = int.Parse(Console.ReadLine());
+                int input2 = int.Parse(Console.ReadLine());
+                //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
-                var res = solution.MyAtoi(input);
-                Console.WriteLine(res);                
+                //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
+                //int input = int.Parse(input2);
+                var res = solution.Divide(input, input2);
+                Console.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 正则解题（第一反应走了捷径）
-            /// </summary>
-            /// <param name="str"></param>
-            /// <returns></returns>
-            public int MyAtoi(string str)
+            public int Divide(int dividend, int divisor)
             {
-                str = str.Trim();                
+                int did = Math.Abs(dividend);
+                int dis = Math.Abs(divisor);
+                //最后的符号位,
+                bool sign = !((did == divisor) ^ (dis == divisor));
 
-                var match = Regex.Match(str, @"^(\+|-)?\d{1,}");
-                if (!match.Success)
-                    return 0;
-
-                string matchStr = match.Value.TrimStart('0');
-                if (string.IsNullOrEmpty(matchStr))
-                    return 0;
-
-                int ans = 0;
-                if (!int.TryParse(matchStr, out ans))
-                {
-                    ans = matchStr[0] == '-' ? int.MinValue : int.MaxValue;
-                }
-                return ans;                
             }
         }
     }
