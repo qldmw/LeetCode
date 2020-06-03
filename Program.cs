@@ -14,74 +14,104 @@ namespace LeetCode
             var solution = new Solution();
             while (true)
             {
-                int input = int.Parse(Console.ReadLine());
+                //int input = int.Parse(Console.ReadLine());
+                //int input2 = int.Parse(Console.ReadLine());
+                //int input3 = int.Parse(Console.ReadLine());
+                string input = Console.ReadLine();
                 int input2 = int.Parse(Console.ReadLine());
-                int input3 = int.Parse(Console.ReadLine());
-                //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
-                //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
+                int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input = int.Parse(input2);
-                var res = solution.New21Game(input, input2, input3);
+                var res = solution.RemoveElement(intArr, input2);
                 Console.WriteLine(res);                
             }
         }
 
-        /// <summary>
-        /// TODO:欠这个题解一个赞
-        /// https://leetcode-cn.com/problems/new-21-game/solution/javani-xiang-dong-tai-gui-hua-jie-jue-shuang-100-b/
-        /// 言简意赅，非常清晰的思路，堪称满分题解！
-        /// </summary>
         public class Solution
         {
             /// <summary>
-            /// 优化后的动态规划
+            /// 快慢指针，可能性能看起来相差不大，但是更巧妙，更简洁
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(1)
             /// </summary>
-            /// <param name="N"></param>
-            /// <param name="K"></param>
-            /// <param name="W"></param>
+            /// <param name="nums"></param>
+            /// <param name="val"></param>
             /// <returns></returns>
-            public double New21Game(int N, int K, int W)
+            public int RemoveElement(int[] nums, int val)
             {
-                double[] points = new double[K + W];
-                //算出不变的获胜概率，以此为锚点，反推之前的获胜概率
-                for (int i = K; i < K + W; i++)
-                    points[i] = i <= N ? 1.0 : 0.0;//直接写成带小数点的，避免执行的时候再隐式类型转换
-                for (int i = K - 1; i >= 0; i--)
+                int cur_index = 0;
+                for (int i = 0; i < nums.Length; i++)
                 {
-                    double probabilitySum = 0;
-                    for (int j = 1; j <= W; j++)
+                    if (nums[i] != val)
                     {
-                        probabilitySum += points[i + j];
+                        nums[cur_index] = nums[i];
+                        cur_index++;
                     }
-                    points[i] = probabilitySum / W;
                 }
-                return points[0];
+                return cur_index;
             }
 
             /// <summary>
-            /// 由不变作为锚点，然后一步一步推算出变化的
-            /// 由于双循环会导致超时，所以要优化一下做法
+            /// 另一种快慢指针，优化了不必要的赋值，也很巧妙，不过不如第一个好理解，有点绕
             /// </summary>
-            /// <param name="N"></param>
-            /// <param name="K"></param>
-            /// <param name="W"></param>
+            /// <param name="nums"></param>
+            /// <param name="val"></param>
             /// <returns></returns>
-            //public double New21Game(int N, int K, int W)
+            //public int RemoveElement(int[] nums, int val)
             //{
-            //    double[] points = new double[K + W];
-            //    //算出不变的获胜概率，以此为锚点，反推之前的获胜概率
-            //    for (int i = K; i < K + W; i++)
-            //        points[i] = i <= N ? 1.0 : 0.0;//直接写成带小数点的，避免执行的时候再隐式类型转换
-            //    for (int i = K - 1; i >= 0; i--)
+            //    int i = 0;
+            //    int n = nums.Length;
+            //    while (i < n)
             //    {
-            //        double possibleSum = 0;
-            //        for (int j = 1; j <= W; j++)
+            //        if (nums[i] == val)
             //        {
-            //            possibleSum += points[i + j];
+            //            nums[i] = nums[n - 1];
+            //            // reduce array size by one
+            //            n--;
             //        }
-            //        points[i] = possibleSum / W;
+            //        else
+            //        {
+            //            i++;
+            //        }
             //    }
-            //    return points[0];
+            //    return n;
+            //}
+
+            /// <summary>
+            /// 第一反应解，然而代码却很丑陋。之前才用过的快慢指针又不知道用了
+            /// </summary>
+            /// <param name="nums"></param>
+            /// <param name="val"></param>
+            /// <returns></returns>
+            //public int RemoveElement(int[] nums, int val)
+            //{
+            //    int res = 0;
+            //    for (int i = 0; i < nums.Length; i++)
+            //    {
+            //        if (nums[i] == val)
+            //        {
+            //            for (int j = i + 1; j < nums.Length; j++)
+            //            {
+            //                if (nums[j] != val)
+            //                {
+            //                    Swap(nums, i, j);
+            //                    res++;
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //        else                    
+            //            res++;                    
+            //    }
+            //    return res;
+            //}
+
+            //private void Swap(int[] nums, int source, int target)
+            //{
+            //    int temp;
+            //    temp = nums[source];
+            //    nums[source] = nums[target];
+            //    nums[target] = temp;
             //}
         }
     }
