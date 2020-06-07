@@ -54,12 +54,12 @@ namespace LeetCode_149
             var resBol2 = dic2.ContainsKey(new int[] { 1, 2 });
 
             //Solved Question: 元组虽然是引用类型，但是它的 == 和 != 是通过内部值比较得出的，不是引用地址的比较。但是这种比较只包含一层
-            var t1 = (1, 2);
-            var t2 = (1, 2);
-            var resBol3 = t1 == t2;
-            var resBol4 = ReferenceEquals(t1, t2);
-            t2.Item2 = 3;
-            var resBol5 = t1 == t2;
+            //var t1 = (1, 2);
+            //var t2 = (1, 2);
+            //var resBol3 = t1 == t2;//元组相等是C#7.3的，要vs2019才能用
+            //var resBol4 = ReferenceEquals(t1, t2);
+            //t2.Item2 = 3;
+            //var resBol5 = t1 == t2;
 
             //C#8.0 元组的一个好用处
             //var state1 = false;
