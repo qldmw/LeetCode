@@ -9,4 +9,5 @@
 *未解决的疑问会留下标记：Unsolved Question*  
 *已解决的疑问会留下标记：Solved Question*  
 *经验总结：Experience*  
-*未做的计划：TODO*
+*未做的计划：TODO*  
+*需要重做的题：REDO*
