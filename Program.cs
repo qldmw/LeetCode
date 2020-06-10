@@ -20,88 +20,70 @@ namespace LeetCode
                 string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
                 int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
-                //int input2 = int.Parse(Console.ReadLine());
-                var res = solution.MajorityElement(intArr);
-                Console.WriteLine(res);
+                int input2 = int.Parse(Console.ReadLine());
+                solution.Rotate(intArr, input2);
+                //Console.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// boyer-moore投票算法，通过一个巧妙的方式获取到过半的数
-            /// 时间复杂度:O(n),毋庸置疑的n,看起来应该比之前的遍历统计快不少才对，然而C#执行下来却和之前的遍历统计差不多，运气不好的时候还是一样的，感觉代码优化对C#不太明显，不知道为啥
-            /// 空间复杂度:O(1),常数个变量，然后执行结果和遍历统计完全差不多，都分别执行三次，就有一次内存少了0.1m,其他两次都是一样的
-            /// Unsolved Question：为什么C#执行效率波动那么大，有时候会波动好几十ms；而且空间复杂度明明从O(n)减少到了O(1),但是效果却不明显，是因为用例的问题么，这也差的太少了吧，还不如一个执行波动来的大
-            /// </summary>
-            /// <param name="nums"></param>
-            /// <returns></returns>
-            public int MajorityElement(int[] nums)
+            public void Rotate(int[] nums, int k)
             {
-                int candidate = 0;
-                int count = 0;
-                for (int i = 0; i < nums.Length; i++)
+                int rotateCount = 0;
+                int temp;
+                for (int curIndex = 0; rotateCount < nums.Length; curIndex++)
                 {
-                    if (count == 0)
-                        candidate = nums[i];
-                    
-                    if (nums[i] != candidate)
-                        count--;
-                    else
-                        count++;                    
+                    int nextIndex = curIndex;
+                    do
+                    {
+                        temp = nums[(nextIndex + k) % nums.Length];
+                        nums[(nextIndex + k) % nums.Length] = nums[nextIndex];
+                        rotateCount++;
+                        nextIndex = (nextIndex + k) % nums.Length;
+                    }
+                    while (nextIndex != curIndex);
                 }
-                return candidate;
             }
 
             /// <summary>
-            /// 第一反应解优化，在加数组中去检查真没必要，虽然最优情况下可能会很好，但是不值得，最后检查一次就可以了
-            /// 时间复杂度：O(n)，遍历n, 插入dictionary常数时间，最后遍历dictionary也是O(n),所以最后是O(n)
-            /// 空间复杂度：O(n)，虽然肯定是小于n的，但是一定是跟n成线性关系的，所以是O(n)
+            /// 巧妙的三次翻转完成右移
+            /// 时间复杂度：O(n)，但是经历了三次翻转，实际执行时间应该是花了2n的时间
+            /// 空间复杂度：O(1)
+            /// 虽然时间复杂度都是O(n)，但是这个多消耗了60ms，应该就是多出来的一次翻转造成的
             /// </summary>
             /// <param name="nums"></param>
-            /// <returns></returns>
-            //public int MajorityElement(int[] nums)
+            /// <param name="k"></param>
+            //public void Rotate(int[] nums, int k)
             //{
-            //    var dic = new Dictionary<int, int>();
-            //    for (int i = 0; i < nums.Length; i++)
-            //    {
-            //        if (dic.ContainsKey(nums[i]))
-            //            dic[nums[i]]++;
-            //        else
-            //            dic.Add(nums[i], 1);
-            //    }
-
-            //    var marjority = dic.FirstOrDefault(s => s.Value > nums.Length / 2);
-            //    if (marjority.Value != 0)
-            //        return marjority.Key;
-            //    return 0;
+            //    int step = k % nums.Length;
+            //    Array.Reverse(nums);
+            //    Array.Reverse(nums, 0, step);
+            //    Array.Reverse(nums, step, nums.Length - step);
             //}
 
             /// <summary>
-            /// 第一反应解，计数，过半的时候再开始检查是否有合适的数
-            /// 时间复杂度：O(n²),dictionary中的FirstOrDefault应该是会遍历的，所以最大项应该是n²
-            /// 空间复杂度：O(n)，虽然肯定是小于n的，但是一定是跟n成线性关系的，所以是O(n)
+            /// 第一反应解，要被覆盖的部分缓存起来，然后交换位置就可以了
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(n)，实际空间是nums.length - k，会随着nums的变大而变大，所以说是线性的。
+            /// 这种单纯考边界的，我真的就老是容易出错，真的是难受，为什么集中不了呢
             /// </summary>
             /// <param name="nums"></param>
-            /// <returns></returns>
-            //public int MajorityElement(int[] nums)
+            /// <param name="k"></param>
+            //public void Rotate(int[] nums, int k)
             //{
-            //    var dic = new Dictionary<int, int>();
+            //    int step = k % nums.Length;
+            //    int[] temps = new int[nums.Length - step];
             //    for (int i = 0; i < nums.Length; i++)
             //    {
-            //        if (dic.ContainsKey(nums[i]))
-            //            dic[nums[i]]++;
+            //        //如果是小于步长的，就放到临时组数中暂存起来
+            //        if (i < nums.Length - step)
+            //            temps[i] = nums[i];
+            //        if (i < step)
+            //            nums[i] = nums[nums.Length - step + i];
             //        else
-            //            dic.Add(nums[i], 1);
-
-            //        if (i >= nums.Length / 2)
-            //        {
-            //            var marjority = dic.FirstOrDefault(s => s.Value > nums.Length / 2);
-            //            if (marjority.Value != 0)
-            //                return marjority.Key;
-            //        }
+            //            nums[i] = temps[(i - step)];
             //    }
-            //    return 0;
             //}
         }
     }
