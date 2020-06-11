@@ -21,87 +21,67 @@ namespace LeetCode
                 //string input2 = Console.ReadLine();
                 int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
-                solution.MoveZeroes(intArr);
-                //Console.WriteLine(res);
+                var res = solution.ThreeSum(intArr);
+                ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 最优解，快慢指针，快指针一次走完，漂亮
-            /// 时间复杂度：O(n)，纯粹的n
-            /// 空间复杂度：O(1)，也是神奇的7.69%
-            /// 每次一个一个挪动的时候，直接快指针往前找就可以了
-            /// </summary>
-            /// <param name="nums"></param>
-            public void MoveZeroes(int[] nums)
+            public IList<IList<int>> ThreeSum(int[] nums)
             {
-                for (int slowPointer = 0, fasterPointer = 0; fasterPointer < nums.Length; fasterPointer++)
+                IList<IList<int>> res = new List<IList<int>>();
+                //1.先排序，然后左右指针向内夹逼。最大值和最小值相加，如果小于0，则左指针向右走；如果大于0，则右指针向左走（每一步都跳到下一个不同的数字，不是单纯加一）
+                Array.Sort(nums);
+                int left = 0;
+                int right = nums.Length - 1;
+                int direction;
+                while (left < right)
                 {
-                    if (nums[fasterPointer] != 0)
+                    direction = nums[left] + nums[right] > 0 ? -1 : 1;
+                    int mid;
+                    //1.1 while循环内：最大最小值相加，如果大于0，内部指针则为左指针加一位置，如果小于0，内部指针则为右指针减一位置。
+                    if (direction < 0)
+                        mid = right - 1;
+                    else
+                        mid = left + 1;
+
+                    while (mid < right && mid > left)
                     {
-                        int temp;
-                        temp = nums[slowPointer];
-                        nums[slowPointer] = nums[fasterPointer];
-                        nums[fasterPointer] = temp;
-                        slowPointer++;
+                        //1.2 左中右三个指针指向的数相加，内部指针向对向移动，如果三值和等于0，加入答案，跳出内部循环；如果内部指针行进中或者行进完错过了答案，就跳出内部循环
+                        int sum = nums[left] + nums[right] + nums[mid];
+                        if (sum == 0)
+                        {
+                            res.Add(new int[3] { left, mid, right });
+                            break;
+                        }
+                        if ((direction > 0 && sum > 0) || (direction < 0 && sum < 0))
+                            break;
+
+                        mid += direction;
                     }
+
+
+                    if (direction < 0)
+                        left = GetNextDiffNumPos(nums, left, direction);
+                    else
+                        right = GetNextDiffNumPos(nums, right, direction);
                 }
+                return res;
             }
 
-            /// <summary>
-            /// 偷过来验证第一反应解O(1)的空间复杂度为什么才7.69%，结果这个O(1)也是7.69%，看来不是算法的问题了
-            /// 时间复杂度：O(n)
-            /// 空间复杂度：O(1)
-            /// </summary>
-            /// <param name="nums"></param>
-            //public void MoveZeroes(int[] nums)
-            //{
-            //    int lastNonZeroFoundAt = 0;
-            //    // If the current element is not 0, then we need to
-            //    // append it just in front of last non 0 element we found. 
-            //    for (int i = 0; i < nums.Length; i++)
-            //    {
-            //        if (nums[i] != 0)
-            //        {
-            //            nums[lastNonZeroFoundAt++] = nums[i];
-            //        }
-            //    }
-            //    // After we have finished processing new elements,
-            //    // all the non-zero elements are already at beginning of array.
-            //    // We just need to fill remaining array with 0's.
-            //    for (int i = lastNonZeroFoundAt; i < nums.Length; i++)
-            //    {
-            //        nums[i] = 0;
-            //    }
-            //}
-
-            /// <summary>
-            /// 第一反应解，快慢指针
-            /// 时间复杂度：O(n)，这个时间复杂度比较难计算。fasterPointer走过的区域slowPointer也只会走一遍，所以应该是循环2n次，也就是O(n)
-            /// 空间复杂度：O(1)，我就根本没有定义变量，搞不懂为什么空间复杂度才7.69%。是因为嵌套循环吗？
-            /// 后来做了个优化，不交换temp，直接覆盖，因为slowPointer指向的一定是0，结果执行一下，没有卵用，哈哈哈哈
-            /// </summary>
-            /// <param name="nums"></param>
-            //public void MoveZeroes(int[] nums)
-            //{
-            //    for (int slowPointer = 0; slowPointer < nums.Length; slowPointer++)
-            //    {
-            //        if (nums[slowPointer] == 0)
-            //        {
-            //            for (int fastPointer = slowPointer + 1; fastPointer < nums.Length; fastPointer++)
-            //            {
-            //                if (nums[fastPointer] != 0)
-            //                {
-            //                    nums[slowPointer] = nums[fastPointer];
-            //                    nums[fastPointer] = 0;
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            private int GetNextDiffNumPos(int[] nums, int pointer, int direction)
+            {
+                int num = nums[pointer];
+                do
+                {
+                    pointer += direction;
+                    if ((pointer <= nums.Length - 1 && pointer >= 0) && nums[pointer] != num)
+                        break;
+                }
+                while (pointer <= nums.Length - 1 && pointer >= 0);
+                return pointer;
+            }
         }
     }
 }
