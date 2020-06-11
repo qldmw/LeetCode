@@ -18,9 +18,12 @@ namespace LeetCode
                 //int input2 = int.Parse(Console.ReadLine());
                 //int input3 = int.Parse(Console.ReadLine());
                 string input = Console.ReadLine();
-                //string input2 = Console.ReadLine();
+                ////string input2 = Console.ReadLine();
                 int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
+                //int[] intArr = new int[] { -1, 0, 1, 2, -1, -4 };
+                //int[] intArr = new int[] { -2, -1, -1, 0, 1, 1, 2 };
+                //int[] intArr = new int[] { -2, 0, 1, 1, 2 };
                 var res = solution.ThreeSum(intArr);
                 ConsoleX.WriteLine(res);
             }
@@ -28,59 +31,49 @@ namespace LeetCode
 
         public class Solution
         {
+            /// <summary>
+            /// 期望用Dictionary来加快速度，结果不行，哈哈哈
+            /// 时间复杂度：O(n²),但是内存循环内还有一个答案的去重，也会影响性能
+            /// 空间复杂度：O(n),一个dictionary
+            /// 结果还是超时。。。其实已经从n³尽力减到n²了
+            /// </summary>
+            /// <param name="nums"></param>
+            /// <returns></returns>
             public IList<IList<int>> ThreeSum(int[] nums)
             {
                 IList<IList<int>> res = new List<IList<int>>();
-                //1.先排序，然后左右指针向内夹逼。最大值和最小值相加，如果小于0，则左指针向右走；如果大于0，则右指针向左走（每一步都跳到下一个不同的数字，不是单纯加一）
-                Array.Sort(nums);
-                int left = 0;
-                int right = nums.Length - 1;
-                int direction;
-                while (left < right)
+                //1.构建一个dictionary，key存数，value存个数。先把数组装进去。
+                Dictionary<int, int> dic = new Dictionary<int, int>();
+                for (int i = 0; i < nums.Length; i++)
                 {
-                    direction = nums[left] + nums[right] > 0 ? -1 : 1;
-                    int mid;
-                    //1.1 while循环内：最大最小值相加，如果大于0，内部指针则为左指针加一位置，如果小于0，内部指针则为右指针减一位置。
-                    if (direction < 0)
-                        mid = right - 1;
+                    if (dic.ContainsKey(nums[i]))
+                        dic[nums[i]]++;
                     else
-                        mid = left + 1;
-
-                    while (mid < right && mid > left)
+                        dic.Add(nums[i], 1);
+                }
+                //2.遍历dictionary，两层循环，再加一个dictionary查找
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    for (int j = i + 1; j < nums.Length; j++)
                     {
-                        //1.2 左中右三个指针指向的数相加，内部指针向对向移动，如果三值和等于0，加入答案，跳出内部循环；如果内部指针行进中或者行进完错过了答案，就跳出内部循环
-                        int sum = nums[left] + nums[right] + nums[mid];
-                        if (sum == 0)
+                        int diff = 0 - nums[i] - nums[j];
+                        //因为使用了num[i]和nums[j],所以暂时dic中计数减一
+                        dic[nums[i]]--;
+                        dic[nums[j]]--;
+                        if (dic.ContainsKey(diff) && dic[diff] > 0)
                         {
-                            res.Add(new int[3] { left, mid, right });
-                            break;
+                            var arr = new int[] { nums[i], nums[j], diff };
+                            Array.Sort(arr);
+                            if (!res.Any(s => s[0] == arr[0] && s[1] == arr[1] && s[2] == arr[2]))
+                                res.Add(arr);
                         }
-                        if ((direction > 0 && sum > 0) || (direction < 0 && sum < 0))
-                            break;
-
-                        mid += direction;
+                        dic[nums[i]]++;
+                        dic[nums[j]]++;
                     }
-
-
-                    if (direction < 0)
-                        left = GetNextDiffNumPos(nums, left, direction);
-                    else
-                        right = GetNextDiffNumPos(nums, right, direction);
+                    //遍历完一个数之后，从dic中计数减一
+                    dic[nums[i]]--;
                 }
                 return res;
-            }
-
-            private int GetNextDiffNumPos(int[] nums, int pointer, int direction)
-            {
-                int num = nums[pointer];
-                do
-                {
-                    pointer += direction;
-                    if ((pointer <= nums.Length - 1 && pointer >= 0) && nums[pointer] != num)
-                        break;
-                }
-                while (pointer <= nums.Length - 1 && pointer >= 0);
-                return pointer;
             }
         }
     }
