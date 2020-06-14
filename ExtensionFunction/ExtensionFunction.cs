@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace System.Extension
 {
     /// <summary>
-    /// Experience：
-    /// 1.[]是IList的方法。
+    /// Knowledge：
+    /// 1.[](下标访问)是IList的方法。
     /// 2.Count是ICollection的方法。
     /// 3.遍历（可不可以foreach）是IEnumerable的方法。
     /// 4.List 和 Array（就是int[]这种）都实现了IList, IEnumerable, ICollection，继承关系大概总结为 IList > ICollection > IEnumerable。
@@ -22,12 +23,70 @@ namespace System.Extension
     /// </summary>
     public static class ConsoleX
     {
+        private static readonly MethodInfo WriteLineForStructInfo = typeof(ConsoleX).GetMethod("WriteLineForStruct", BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly MethodInfo WriteLineForStringInfo = typeof(ConsoleX).GetMethod("WriteLineForString", BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly MethodInfo WriteLineForIEnumerableInfo = typeof(ConsoleX).GetMethod("WriteLineForIEnumerable", BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly Dictionary<Type, Delegate> WriteLineDelegateCache = new Dictionary<Type, Delegate>();
+
+        /// <summary>
+        /// 打印所有常用类型的WriteLine方法
+        /// </summary>
+        /// <datail>利用反射确定输入数据类型，转到对应类型的实现方法。其实还是有缺陷，不过本来就是用来打印结果的，就这样了吧</datail>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        public static void WriteLine<T>(T obj)
+        {
+            Type t = typeof(T);
+
+            Delegate action;
+            if (!WriteLineDelegateCache.TryGetValue(t, out action))
+            {
+                MethodInfo methodInfo;
+                if (t.IsValueType)
+                    methodInfo = WriteLineForStructInfo;
+                else
+                {
+                    //这里的判断问题很大，只为满足当前需求
+                    if (t.IsEnum || t.IsArray || t.IsGenericType)
+                        methodInfo = WriteLineForIEnumerableInfo;
+                    else
+                        methodInfo = WriteLineForStringInfo;
+                }
+                //通过反射获取到需要的方法信息
+                action = Delegate.CreateDelegate(typeof(Action<T>), methodInfo.MakeGenericMethod(t));
+                WriteLineDelegateCache.Add(t, action);
+            }
+            //定义这是一个有一个参数没有返回值方法。(多个参数可以用Action<T,T2,T3>,如果是有返回类型的可以用Func<T,TResult>来定义)
+            ((Action<T>)action)(obj);
+        }
+
+        /// <summary>
+        /// 调用系统方法打印值类型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="stru"></param>
+        private static void WriteLineForStruct<T>(T stru) where T : struct
+        {
+            Console.WriteLine(stru);
+        }
+
+        /// <summary>
+        /// 调用系统方法打印string
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="str"></param>
+        private static void WriteLineForString<T>(string str)
+        {
+            Console.WriteLine(str);
+        }
+
+        #region 自定义打印一二维数组方法
         /// <summary>
         /// 打印数组（支持一维和二维）
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="arr"></param>
-        public static void WriteLine<T>(T arr) where T : IEnumerable
+        private static void WriteLineForIEnumerable<T>(T arr) where T : IEnumerable
         {
             //通过第一个儿子确定是一维还是二维的
             if (IsChildEnumerable(arr))
@@ -86,5 +145,6 @@ namespace System.Extension
             str = str.TrimEnd(',') + "]";
             Console.WriteLine(str);
         }
+        #endregion
     }
 }
