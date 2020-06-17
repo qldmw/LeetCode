@@ -14,82 +14,103 @@ namespace LeetCode
             var solution = new Solution();
             while (true)
             {
-                //int input = int.Parse(Console.ReadLine());
+                int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
                 //int input3 = int.Parse(Console.ReadLine());
-                string input = Console.ReadLine();
-                string input2 = Console.ReadLine();
+                //string input = Console.ReadLine();
+                //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
                 //int[] intArr = new int[] { 1, 3, 2 };
                 //int[] intArr = new int[] { 4, 2, 1, 3, 2, 6, 3 };
                 //int[] intArr2 = new int[] { 4, 2, 1, 3, 2, 6, 3 };
-                var res = solution.StrStr(input, input2);
+                var res = solution.CountAndSay(input);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public int StrStr(string haystack, string needle)
+            /// <summary>
+            /// 递归解，这可太厉害了，直接把内存给用满了。相比下来迭代可太慢了，我看资源，迭代只使用了60MB内存，递归用了6GB不止，直到内存使用完。
+            /// 时间复杂度：O(?)，总之比迭代快了很多很多
+            /// 空间复杂度：O(?)，内存都炸了
+            /// </summary>
+            /// <param name="n"></param>
+            /// <returns></returns>
+            public string CountAndSay(int n)
             {
-                if (needle == string.Empty)
-                    return 0;
-
-                int ans = -1;
-                for (int i = 0; i <= haystack.Length - needle.Length; i++)
+                if (n == 1)
+                    return "1";
+                string s = CountAndSay(n - 1);
+                StringBuilder sb = new StringBuilder();
+                int index = 0;
+                while (index < s.Length)
                 {
-                    int j = 0;
-                    for (; j < needle.Length; j++)
+                    int count = 1;
+                    char num = s[index];
+                    if (index < s.Length - 1 && s[index] == s[index + 1])
                     {
-                        if (haystack[i + j] != needle[j])
+                        while (index < s.Length - 1 && s[index] == s[index + 1])
                         {
-                            //sunday算法：不匹配，则查看 待匹配字符串 的后一位字符 c：1.若c存在于Pattern中，则 idx = idx + 偏移表[c] 2.否则，idx = idx + len(pattern)
-                            int nextStartIndex = needle.IndexOf(haystack[i + j]);
-                            if (nextStartIndex == -1)
-                                i = i + needle.Length;
-                            else
-                                i = i + nextStartIndex;
-                            break;
+                            count++;
+                            index++;
                         }
                     }
-                    if (j == needle.Length)
-                    {
-                        ans = i;
-                        break;
-                    }
+                    index++;
+                    sb.Append(count);
+                    sb.Append(num);
                 }
-                return ans;
+                return sb.ToString();
             }
 
             /// <summary>
-            /// 时间复杂度：O(n)，可能这种比较好算的就要算最优和最差了吧，最优时间是O(n),最差时间是O((n-l)n)
-            /// 空间复杂度：O(1)
+            /// 第一反应解
+            /// 时间复杂度：O(?),这是真不知道怎么计算了，总之大于线性，应该是指数级上升
+            /// 空间复杂度：O(n)
             /// </summary>
-            /// <param name="haystack"></param>
-            /// <param name="needle"></param>
+            /// <param name="n"></param>
             /// <returns></returns>
-            //public int StrStr(string haystack, string needle)
+            //public string CountAndSay(int n)
             //{
-            //    if (needle == string.Empty)
-            //        return 0;
-
-            //    int ans = -1;
-            //    for (int i = 0; i <= haystack.Length - needle.Length; i++)
+            //    StringBuilder target = new StringBuilder("1");
+            //    int repeatCount;
+            //    char character;
+            //    //循环获取第n个数
+            //    while (--n > 0)
             //    {
-            //        int j = 0;
-            //        for (; j < needle.Length; j++)
+            //        StringBuilder cur_target = new StringBuilder();
+            //        character = target[0];
+            //        repeatCount = 1;
+            //        //如果是第一个数
+            //        if (target.Length == 1)
             //        {
-            //            if (haystack[i + j] != needle[j])
-            //                break;
+            //            target = new StringBuilder("11");
+            //            continue;
             //        }
-            //        if (j == needle.Length)
+            //        //遍历当前字符串，生成描述
+            //        for (int i = 1; i < target.Length; i++)
             //        {
-            //            ans = i;
-            //            break;
+            //            if (target[i] == target[i - 1])
+            //                repeatCount++;
+            //            else
+            //            {
+            //                cur_target.Append(repeatCount);
+            //                cur_target.Append(character - '0');
+            //                //改写成当前的字符
+            //                character = target[i];
+            //                repeatCount = 1;
+            //            }
+
+            //            if (i == target.Length - 1)
+            //            {
+            //                cur_target.Append(repeatCount);
+            //                cur_target.Append(character - '0');
+            //            }
             //        }
+            //        target = cur_target;
             //    }
-            //    return ans;
+            //    return target.ToString();
             //}
         }
     }
