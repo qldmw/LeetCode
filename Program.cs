@@ -19,29 +19,27 @@ namespace LeetCode
                 //int input3 = int.Parse(Console.ReadLine());
                 //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
-                string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
                 //int[] intArr = new int[] { 1, 3, 2 };
                 //int[] intArr = new int[] { 1, 3 };
                 TreeNode tn1 = new TreeNode(1);
-                TreeNode tn2 = new TreeNode(2);
-                var res = solution.IsSameTree(tn1, tn2);
+                var res = solution.IsSymmetric(tn1);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-
+            
         }
-    }
 
-    public class TreeNode
-    {
-        public int val;
-        public TreeNode left;
-        public TreeNode right;
-        public TreeNode(int x) { val = x; }
+        public class TreeNode
+        {
+            public int val;
+            public TreeNode left;
+            public TreeNode right;
+            public TreeNode(int x) { val = x; }
+        }
     }
 }
