@@ -35,9 +35,29 @@ namespace LeetCode
 
         public class Solution
         {
+            /// <summary>
+            /// 递归构建树
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(n),二叉搜索树空间 O(n)，递归栈深度 O(logn)
+            /// 递归构建树可以用引用传递去构建，也可以像这样去return TreeNode去构建，不要拘泥于一个方式了
+            /// </summary>
+            /// <param name="nums"></param>
+            /// <returns></returns>
             public TreeNode SortedArrayToBST(int[] nums)
             {
+                return BuildTree(nums, 0, nums.Length - 1);
+            }
 
+            public TreeNode BuildTree(int[] nums, int left, int right)
+            {
+                if (left > right) return null;
+
+                int mid = (left + right) / 2;
+
+                TreeNode root = new TreeNode(nums[mid]);
+                root.left = BuildTree(nums, left, mid - 1);
+                root.right = BuildTree(nums, mid + 1, right);
+                return root;
             }
         }
 
