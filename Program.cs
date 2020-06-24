@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Extension;
+using LeetCode.ExtensionFunction;
 
 namespace LeetCode
 {
@@ -21,52 +22,44 @@ namespace LeetCode
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
-                int[] intArr = new int[] { 1, 3, 2 };
-                //int[] intArr = new int[] { 1, 3 };
-                //TreeNode tn1 = new TreeNode(1);
-                //TreeNode tn2 = new TreeNode(2);
-                //TreeNode tn3 = new TreeNode(3);
-                //tn1.left = tn2;
-                //tn2.left = tn3;
-                var res = solution.SortedArrayToBST(intArr);
+                //int?[] data = new int?[] { 3, 9, 20, null, null, 15, 7 };
+                //int?[] data = new int?[] { 1, 2, 2, 3, 3, null, null, 4, 4 };
+                //int?[] data = new int?[] { 1, 2, null, 3 };
+                int?[] data = new int?[] { 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, null, null, 5, 5 };
+                var tree = new DataStructureBuilder().BuildTree(data);
+                var res = solution.IsBalanced(tree);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 递归构建树
-            /// 时间复杂度：O(n)
-            /// 空间复杂度：O(n),二叉搜索树空间 O(n)，递归栈深度 O(logn)
-            /// 递归构建树可以用引用传递去构建，也可以像这样去return TreeNode去构建，不要拘泥于一个方式了
-            /// </summary>
-            /// <param name="nums"></param>
-            /// <returns></returns>
-            public TreeNode SortedArrayToBST(int[] nums)
+            public bool IsBalanced(TreeNode root)
             {
-                return BuildTree(nums, 0, nums.Length - 1);
+                if (root == null)
+                    return true;
+
+                int noChildLevel = int.MaxValue;
+                int curLevle = 0;
+                Queue<TreeNode> queue = new Queue<TreeNode>();
+                queue.Enqueue(root);
+                while (queue.Count > 0)
+                {
+                    curLevle++;
+                    foreach (var tree in queue.ToList())
+                    {
+                        root = queue.Dequeue();
+                        if (!(root.left != null && root.right != null))
+                            noChildLevel = Math.Min(curLevle, noChildLevel);
+
+                        if (root.left != null)
+                            queue.Enqueue(root.left);
+                        if (root.right != null)
+                            queue.Enqueue(root.right);
+                    }
+                }
+                return curLevle - noChildLevel <= 1;
             }
-
-            public TreeNode BuildTree(int[] nums, int left, int right)
-            {
-                if (left > right) return null;
-
-                int mid = (left + right) / 2;
-
-                TreeNode root = new TreeNode(nums[mid]);
-                root.left = BuildTree(nums, left, mid - 1);
-                root.right = BuildTree(nums, mid + 1, right);
-                return root;
-            }
-        }
-
-        public class TreeNode
-        {
-            public int val;
-            public TreeNode left;
-            public TreeNode right;
-            public TreeNode(int x) { val = x; }
         }
     }
 }
