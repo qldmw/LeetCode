@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LeetCode.ExtensionFunction;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -76,13 +77,5 @@ namespace LeetCode_100
         //    bool qRIsnull = q.right == null;
         //    return p.val == q.val && pLIsnull == qLIsnull && pRIsnull == qRIsnull;
         //}
-    }
-
-    public class TreeNode
-    {
-        public int val;
-        public TreeNode left;
-        public TreeNode right;
-        public TreeNode(int x) { val = x; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LeetCode.ExtensionFunction;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,13 +64,5 @@ namespace LeetCode_107
             }
             return res.Reverse().ToList();
         }
-    }
-
-    public class TreeNode
-    {
-        public int val;
-        public TreeNode left;
-        public TreeNode right;
-        public TreeNode(int x) { val = x; }
     }
 }

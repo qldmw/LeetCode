@@ -14,7 +14,7 @@ namespace LeetCode.ExtensionFunction
         /// <returns></returns>
         public TreeNode BuildTree<T>(T data) where T : IList<int?>
         {
-            if (data == null)
+            if (data == null || data.Count == 0)
                 return null;
             
             //构建一个根节点，之后添加的添加的节点都以传引用地址的方式接在根老爷的腿上

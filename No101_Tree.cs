@@ -86,12 +86,4 @@ namespace LeetCode_101
         //        return IsSymmetricTree(p.left, q.right) && IsSymmetricTree(p.right, q.left);
         //}
     }
-
-    public class TreeNode
-    {
-        public int val;
-        public TreeNode left;
-        public TreeNode right;
-        public TreeNode(int x) { val = x; }
-    }
 }
