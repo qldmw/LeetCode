@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LeetCode.ExtensionFunction;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

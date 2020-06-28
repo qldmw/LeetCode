@@ -25,12 +25,16 @@ namespace LeetCode.ExtensionFunction
             {
                 var temp = queue.Dequeue();
                 temp.left = data[i] != null ? new TreeNode(data[i] ?? 0) : null;
-                queue.Enqueue(temp.left);
+                //为空就不加入到队列中了，否则会导致下一次连接空引用
+                if (temp.left != null)
+                    queue.Enqueue(temp.left);
                 if (i + 1 < data.Count)
                 {
                     temp.right = data[i + 1] != null ? new TreeNode(data[i + 1] ?? 0) : null;
                     i++;
-                    queue.Enqueue(temp.right);
+                    //为空就不加入到队列中了，否则会导致下一次连接空引用
+                    if (temp.right != null)
+                        queue.Enqueue(temp.right);
                 }
             }
             return root;
