@@ -23,6 +23,7 @@
 ## 资源
 .net core 2.2 系统自带数据结构：https://docs.microsoft.com/zh-cn/dotnet/api/system.collections.generic?view=netcore-2.2  
 小根堆的代码实现：No215  
+快排三数取中法：No215  
 
 ## 排名
 用于观察二八定律(如果真是这样，干劲就更足啦，哈哈哈)  
