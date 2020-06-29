@@ -8,7 +8,9 @@
 6.二分法 - 典型的二分法边界条件示例 - No35  
 7.Boyer-Moore投票算法 - 高效统计过半数目数的算法 - No169  
 8.各字符串查找算法 - 字符串查找 - No28  
-9.莫里斯(morris)遍历 - 二叉树遍历,二叉树线索化 - No94  
+9.各最长回文子串查找算法 - 回文子串查找 - No5  
+10.莫里斯(morris)遍历 - 二叉树遍历,二叉树线索化 - No94  
+
 
 ## 标记
 *未解决的疑问会留下标记：Unsolved Question*  
@@ -19,7 +21,8 @@
 *需要重做的题：REDO*  
 
 ## 资源
-.net core 2.2 系统自带数据结构：https://docs.microsoft.com/zh-cn/dotnet/api/system.collections.generic?view=netcore-2.2
+.net core 2.2 系统自带数据结构：https://docs.microsoft.com/zh-cn/dotnet/api/system.collections.generic?view=netcore-2.2  
+小根堆的代码实现：No215  
 
 ## 排名
 用于观察二八定律(如果真是这样，干劲就更足啦，哈哈哈)  
@@ -30,5 +33,4 @@
 |       75  | 80240 |
 |       77  | 78323 |
 |       78  | 77585 |
-
-
+|       81  | 74976 |
