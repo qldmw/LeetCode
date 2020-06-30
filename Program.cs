@@ -28,7 +28,7 @@ namespace LeetCode
                 //int?[] data = new int?[] { 1, 2, null, 3 };
                 //int?[] data = new int?[] { 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, null, null, 5, 5 };
                 //var tree = new DataStructureBuilder().BuildTree(data);
-                var res = solution.FindKthLargest(new int[] { 5, 2, 4, 1, 3, 6, 0 }, 4);
+                var res = solution.QuickSort(new int[] { 5, 2, 4, 1, 3, 6, 0 }, 4);
                 ConsoleX.WriteLine(res);
             }
         }

@@ -10,6 +10,8 @@
 8.各字符串查找算法 - 字符串查找 - No28  
 9.各最长回文子串查找算法 - 回文子串查找 - No5  
 10.莫里斯(morris)遍历 - 二叉树遍历,二叉树线索化 - No94  
+11.传统快排，快排三数取中法 - 快排 - No215  
+12.小根堆 - 代码实现 - No215  
 
 
 ## 标记
@@ -22,8 +24,8 @@
 
 ## 资源
 .net core 2.2 系统自带数据结构：https://docs.microsoft.com/zh-cn/dotnet/api/system.collections.generic?view=netcore-2.2  
-小根堆的代码实现：No215  
-快排三数取中法：No215  
+三数取中快排讲解：https://www.cnblogs.com/chengxiao/p/6262208.html  
+快排逐步优化讲解：https://www.jianshu.com/p/7b65cce0f1e1  
 
 ## 排名
 用于观察二八定律(如果真是这样，干劲就更足啦，哈哈哈)  
@@ -35,3 +37,4 @@
 |       77  | 78323 |
 |       78  | 77585 |
 |       81  | 74976 |
+|       82  | 74300 |

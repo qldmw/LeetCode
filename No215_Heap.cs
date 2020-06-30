@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LeetCode
+namespace LeetCode_215
 {
     //static void Main(string[] args)
     //{
@@ -56,8 +56,8 @@ namespace LeetCode
 
         private int Partition(int[] nums, int left, int right)
         {
-            //因为三数取中会有减一这个操作，可能会越界
-            if (left == right)
+            //防止越界
+            if (left >= right)
                 return left;
 
             MedianOfThree(nums, left, right);
@@ -229,5 +229,59 @@ namespace LeetCode
         //        }
         //    }
         //}
+    }
+
+    public static class TraditionalQuickSortSample
+    {
+        /// <summary>
+        /// 传统快排
+        /// 传统Partition的slow指针和我第一思路有点冲突，而且其实做法也不如夹逼指针来的好，所以还是尽量使用夹逼Partition
+        /// </summary>
+        /// <param name="arr"></param>
+        public static void QuickSort(this int[] arr)
+        {
+            Sort(arr, 0, arr.Length - 1);
+        }
+
+        private static void Sort(int[] arr, int left, int right)
+        {
+            if (left >= right)
+                return;
+            int mid = Partition(arr, left, right);
+            Sort(arr, left, mid - 1);
+            Sort(arr, mid + 1, right);
+        }
+
+        /// <summary>
+        /// 这里使用快慢指针的方法，试试传统的做法（前后夹逼的做法更优一些）
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        private static int Partition(int[] arr, int left, int right)
+        {
+            int pivot = arr[right];
+            int slow = left;
+            for (int fast = left; fast < right; fast++)
+            {
+                if (arr[fast] < pivot)
+                {
+                    Swap(arr, fast, slow);
+                    slow++;
+                }
+            }
+            Swap(arr, slow, right);
+            return slow;
+        }
+
+        private static void Swap(int[] arr, int i, int j)
+        {
+            //针对快慢指针常出现原地换位的优化
+            if (i == j)
+                return;
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
     }
 }
