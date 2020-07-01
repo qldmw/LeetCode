@@ -28,14 +28,17 @@ namespace LeetCode
                 //int?[] data = new int?[] { 1, 2, null, 3 };
                 //int?[] data = new int?[] { 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, null, null, 5, 5 };
                 //var tree = new DataStructureBuilder().BuildTree(data);
-                var res = solution.QuickSort(new int[] { 5, 2, 4, 1, 3, 6, 0 }, 4);
+                var res = solution.GenerateTrees(6);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
+            public IList<TreeNode> GenerateTrees(int n)
+            {
 
+            }
         }
     }
 }
