@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LeetCode.ExtensionFunction;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace System.Extension
         private static readonly MethodInfo WriteLineForStructInfo = typeof(ConsoleX).GetMethod("WriteLineForStruct", BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly MethodInfo WriteLineForStringInfo = typeof(ConsoleX).GetMethod("WriteLineForString", BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly MethodInfo WriteLineForIEnumerableInfo = typeof(ConsoleX).GetMethod("WriteLineForIEnumerable", BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly MethodInfo WriteLineForListNodeInfo = typeof(ConsoleX).GetMethod("WriteLineForListNode", BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly Dictionary<Type, Delegate> WriteLineDelegateCache = new Dictionary<Type, Delegate>();
 
         /// <summary>
@@ -49,6 +51,8 @@ namespace System.Extension
                     //这里的判断问题很大，只为满足当前需求
                     if (t.IsEnum || t.IsArray || t.IsGenericType)
                         methodInfo = WriteLineForIEnumerableInfo;
+                    else if (t.Name == "ListNode")
+                        methodInfo = WriteLineForListNodeInfo;
                     else
                         methodInfo = WriteLineForStringInfo;
                 }
@@ -78,6 +82,23 @@ namespace System.Extension
         private static void WriteLineForString<T>(string str)
         {
             Console.WriteLine(str);
+        }
+
+        /// <summary>
+        /// 调用系统方法打印ListNode
+        /// </summary>
+        /// <param name="node"></param>
+        private static void WriteLineForListNode<T>(ListNode node)
+        {
+            StringBuilder sb = new StringBuilder();
+            while (node != null)
+            {
+                sb.Append(node.val);
+                if (node.next != null)
+                    sb.Append("->");
+                node = node.next;
+            }
+            Console.WriteLine(sb.ToString());
         }
 
         #region 自定义打印一二维数组方法

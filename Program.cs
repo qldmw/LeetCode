@@ -17,28 +17,23 @@ namespace LeetCode
             {
                 //int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
-                //int input3 = int.Parse(Console.ReadLine());
                 //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
                 //int?[] data = new int?[] { 6, 2, 8, 0, 4, 7, 9, null, null, 3, 5 };
-                //int?[] data = new int?[] { 1, null, 2, 3 };
-                //int?[] data = new int?[] { 1, 2, 2, 3, 3, null, null, 4, 4 };
-                //int?[] data = new int?[] { 1, 2, null, 3 };
-                //int?[] data = new int?[] { 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, null, null, 5, 5 };
                 //var tree = new DataStructureBuilder().BuildTree(data);
-                var res = solution.GenerateTrees(6);
+                var builder = new DataStructureBuilder();
+                var node1 = builder.BuildListNode(new int[] { 1, 2, 4 });
+                var node2 = builder.BuildListNode(new int[] { 1, 3, 4 });
+                var res = solution.MergeTwoLists(node1, node2);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public IList<TreeNode> GenerateTrees(int n)
-            {
 
-            }
         }
     }
 }
