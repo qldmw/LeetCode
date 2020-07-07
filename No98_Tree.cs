@@ -31,25 +31,55 @@ namespace LeetCode_98
 
     public class Solution
     {
+        
+        /// <summary>
+        /// 题解中只维护一个边界的递归
+        /// 时间复杂度：O(n)
+        /// 空间复杂度：O(n)
+        /// 最优解，充分利用了深度优先的特性，只需要维护一个当前小值的边界就可以了
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public bool IsValidBST(TreeNode root)
+        {
+            //空节点跳过
+            if (root == null)
+                return true;
+            //验证左子树
+            if (!IsValidBST(root.left))
+                return false;
+            //比较值
+            if (root.val > lastVal)
+                lastVal = root.val;
+            else
+                return false;
+            //验证右子树
+            if (!IsValidBST(root.right))
+                return false;
+            //全都合规，返回true
+            return true;
+        }
+        double lastVal = double.MinValue;
+
         /// <summary>
         /// 第一反应解(递归)的写法优化
         /// 后记：看了解题里还有一种很有意思的递归，它只维护一个最小值，判断条件也只有一个，大于最小值。因为是深度优先的遍历，所以这个做法是可行的
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public bool IsValidBST(TreeNode root)
-        {
-            return VerifyTree(root, null, null);
-        }
+        //public bool IsValidBST(TreeNode root)
+        //{
+        //    return VerifyTree(root, null, null);
+        //}
 
-        private bool VerifyTree(TreeNode root, int? min, int? max)
-        {
-            if (root == null)
-                return true;
-            if ((min != null && root.val <= min) || (max != null && root.val >= max))
-                return false;
-            return VerifyTree(root.left, min, root.val) && VerifyTree(root.right, root.val, max);
-        }
+        //private bool VerifyTree(TreeNode root, int? min, int? max)
+        //{
+        //    if (root == null)
+        //        return true;
+        //    if ((min != null && root.val <= min) || (max != null && root.val >= max))
+        //        return false;
+        //    return VerifyTree(root.left, min, root.val) && VerifyTree(root.right, root.val, max);
+        //}
 
         /// <summary>
         /// 递归。有个坑点，不能只关注最近节点，因为二叉搜索树要求的是所有左节点都小于根节点，所有有节点都大于根节点
