@@ -23,14 +23,14 @@ namespace LeetCode
                 //int input2 = int.Parse(Console.ReadLine());
                 var builder = new DataStructureBuilder();
                 //int?[] data = new int?[] { 10, 5, 15, null, null, 6, 20 };
-                int?[] data = new int?[] { -10, 9, 20, null, null, 15, 7 };
+                //int?[] data = new int?[] { -10, 9, 20, null, null, 15, 7 };
                 //int?[] data = new int?[] { -2147483648, null, 2147483647 };
                 //int?[] data = new int?[] { 1, 3, null, null, 2 };
-                var tree = builder.BuildTree(data);
-                //var listNode = builder.BuildListNode(new int[] { 4, 2, 4, 1, 1, 1 });
+                //var tree = builder.BuildTree(data);
+                var listNode = builder.BuildListNode(new int[] { 1, 2, 3, 4, 5 });
                 //var listNode2 = builder.BuildListNode(new int[] { 5, 6});
                 //listNode2.next.next = listNode.next.next.next.next;
-                var res = solution.MaxPathSum(tree);
+                var res = solution.ReverseList(listNode);
                 ConsoleX.WriteLine(res);
             }
         }
