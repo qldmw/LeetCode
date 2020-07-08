@@ -27,17 +27,20 @@ namespace LeetCode
                 //int?[] data = new int?[] { -2147483648, null, 2147483647 };
                 //int?[] data = new int?[] { 1, 3, null, null, 2 };
                 //var tree = builder.BuildTree(data);
-                var listNode = builder.BuildListNode(new int[] { 1, 2, 3, 4, 5 });
+                var listNode = builder.BuildListNode(new int[] { 1, 0, 0 });
                 //var listNode2 = builder.BuildListNode(new int[] { 5, 6});
                 //listNode2.next.next = listNode.next.next.next.next;
-                var res = solution.ReverseList(listNode);
-                ConsoleX.WriteLine(res);
+                solution.DeleteNode(listNode);
+                //ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            
+            public void DeleteNode(ListNode node)
+            {
+
+            }
         }
     }
 }

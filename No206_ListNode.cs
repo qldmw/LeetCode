@@ -33,18 +33,65 @@ namespace LeetCode_206
     public class Solution
     {
         /// <summary>
-        /// 题解的递归。都挺好的，就是逻辑绕，实属协作开发的下乘解法，写一个算法要写十行注释
+        /// 题解的迭代，最优解，最优写法
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
         public ListNode ReverseList(ListNode head)
         {
-            if (head == null || head.next == null) return head;
-            ListNode p = ReverseList(head.next);
-            head.next.next = head;
-            head.next = null;
-            return p;
+            ListNode prev = null;
+            ListNode curr = head;
+            while (curr != null)
+            {
+                ListNode nextTemp = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = nextTemp;
+            }
+            return prev;
         }
+
+        /// <summary>
+        /// 迭代
+        /// 时间复杂度：O(n)
+        /// 空间复杂度：O(1)，还可以用 O(n) 的来做，就不会这么绕，直接new
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        //public ListNode ReverseList(ListNode head)
+        //{
+        //    ListNode res = null;
+        //    ListNode preNode = null;
+        //    while (head != null)
+        //    {
+        //        //处于第一个节点的时候
+        //        if (preNode != null)
+        //            preNode.next = res;
+
+        //        res = preNode;
+        //        preNode = head;
+        //        head = head.next;
+
+        //        //处理最后一个节点
+        //        if (head == null)
+        //            preNode.next = res;
+        //    }
+        //    return preNode;
+        //}
+
+        /// <summary>
+        /// 题解的递归。都挺好的，就是逻辑绕，实属协作开发的下乘解法，写一个算法要写十行注释
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        //public ListNode ReverseList(ListNode head)
+        //{
+        //    if (head == null || head.next == null) return head;
+        //    ListNode p = ReverseList(head.next);
+        //    head.next.next = head;
+        //    head.next = null;
+        //    return p;
+        //}
 
         /// <summary>
         /// 递归。写的不好看，哈哈哈
@@ -74,34 +121,6 @@ namespace LeetCode_206
         //    head.next = null;
 
         //    return head;
-        //}
-
-        /// <summary>
-        /// 迭代
-        /// 时间复杂度：O(n)
-        /// 空间复杂度：O(1)，还可以用 O(n) 的来做，就不会这么绕，直接new
-        /// </summary>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        //public ListNode ReverseList(ListNode head)
-        //{
-        //    ListNode res = null;
-        //    ListNode preNode = null;
-        //    while (head != null)
-        //    {
-        //        //处于第一个节点的时候
-        //        if (preNode != null)
-        //            preNode.next = res;
-
-        //        res = preNode;
-        //        preNode = head;
-        //        head = head.next;
-
-        //        //处理最后一个节点
-        //        if (head == null)
-        //            preNode.next = res;
-        //    }
-        //    return preNode;
         //}
     }
 }
