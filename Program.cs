@@ -27,32 +27,19 @@ namespace LeetCode
                 //int?[] data = new int?[] { -2147483648, null, 2147483647 };
                 //int?[] data = new int?[] { 1, 3, null, null, 2 };
                 //var tree = builder.BuildTree(data);
-                var listNode = builder.BuildListNode(new int[] { 1, 0, 1 });
+                var listNode = builder.BuildListNode(new int[] { 1, 2, 3, 4, 5 });
                 //var listNode2 = builder.BuildListNode(new int[] { 5, 6});
                 //listNode2.next.next = listNode.next.next.next.next;
-                var res = solution.GetDecimalValue(listNode);
+                var res = solution.RemoveNthFromEnd(listNode, 3);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 链表移动 + 左移位运算(乘法也可以，乘以2也是一样的道理）
-            /// 时间复杂度：O(n)
-            /// 空间复杂度：O(1)
-            /// </summary>
-            /// <param name="head"></param>
-            /// <returns></returns>
-            public int GetDecimalValue(ListNode head)
+            public ListNode RemoveNthFromEnd(ListNode head, int n)
             {
-                int res = 0;
-                while (head != null)
-                {
-                    res = (res << 1) + head.val;
-                    head = head.next;
-                }
-                return res;
+
             }
         }
     }
