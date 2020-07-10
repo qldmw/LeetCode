@@ -39,7 +39,27 @@ namespace LeetCode
         {
             public ListNode RemoveNthFromEnd(ListNode head, int n)
             {
+                if (head == null)
+                    return null;
 
+                ListNode fast = head;
+                ListNode slow = head;
+                while (--n > 0)
+                {
+                    fast = fast.next;
+                }
+                while (fast.next != null)
+                {
+                    if (fast.next.next == null)
+                    {
+                        slow.val = slow.next.val;
+                        slow.next = slow.next.next;
+                        break;
+                    }
+                    fast = fast.next;
+                    slow = slow.next;
+                }
+                return head;
             }
         }
     }
