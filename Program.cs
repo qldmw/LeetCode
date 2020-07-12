@@ -27,39 +27,51 @@ namespace LeetCode
                 //int?[] data = new int?[] { -2147483648, null, 2147483647 };
                 //int?[] data = new int?[] { 1, 3, null, null, 2 };
                 //var tree = builder.BuildTree(data);
-                var listNode = builder.BuildListNode(new int[] { 1, 2, 3, 4, 5 });
+                var listNode = builder.BuildListNode(new int[] { 1, 2, 3, 3, 4, 4, 4, 5 });
                 //var listNode2 = builder.BuildListNode(new int[] { 5, 6});
                 //listNode2.next.next = listNode.next.next.next.next;
-                var res = solution.RemoveNthFromEnd(listNode, 3);
+                var res = solution.DeleteDuplicates(listNode);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public ListNode RemoveNthFromEnd(ListNode head, int n)
+            /// <summary>
+            /// 循环查找重复节点
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(1)
+            /// 链表的题我发现就是给我锻炼思维的严谨性的，解题思路上没有太大的问题。而且这种题目，画图会让思路很清晰，一定要动笔。
+            /// </summary>
+            /// <param name="head"></param>
+            /// <returns></returns>
+            public ListNode DeleteDuplicates(ListNode head)
             {
-                if (head == null)
-                    return null;
+                //创建哨兵节点
+                ListNode sentinel = new ListNode(-1);
+                sentinel.next = head;
 
-                ListNode fast = head;
-                ListNode slow = head;
-                while (--n > 0)
+                //开启循环查找重复节点
+                ListNode temp = sentinel;
+                while (temp.next != null)
                 {
-                    fast = fast.next;
-                }
-                while (fast.next != null)
-                {
-                    if (fast.next.next == null)
+                    //如果出现重复节点
+                    if (temp.next.next != null && temp.next.val == temp.next.next.val)
                     {
-                        slow.val = slow.next.val;
-                        slow.next = slow.next.next;
-                        break;
+                        ListNode innerTemp = temp.next;
+                        int duplicatedVal = temp.next.val;
+                        //循环找到所有的重复值
+                        while (innerTemp.next != null && innerTemp.next.val == duplicatedVal)
+                        {
+                            innerTemp = innerTemp.next;
+                        }
+                        //删掉重复节点
+                        temp.next = innerTemp.next;
                     }
-                    fast = fast.next;
-                    slow = slow.next;
+                    else
+                        temp = temp.next;
                 }
-                return head;
+                return sentinel.next;
             }
         }
     }
