@@ -27,51 +27,64 @@ namespace LeetCode
                 //int?[] data = new int?[] { -2147483648, null, 2147483647 };
                 //int?[] data = new int?[] { 1, 3, null, null, 2 };
                 //var tree = builder.BuildTree(data);
-                var listNode = builder.BuildListNode(new int[] { 1, 2, 3, 3, 4, 4, 4, 5 });
+                var listNode = builder.BuildListNode(new int[] { 1, 2, 3, 4, 5 });
                 //var listNode2 = builder.BuildListNode(new int[] { 5, 6});
                 //listNode2.next.next = listNode.next.next.next.next;
-                var res = solution.DeleteDuplicates(listNode);
+                var res = solution.ReverseKGroup(listNode, 3);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 循环查找重复节点
-            /// 时间复杂度：O(n)
-            /// 空间复杂度：O(1)
-            /// 链表的题我发现就是给我锻炼思维的严谨性的，解题思路上没有太大的问题。而且这种题目，画图会让思路很清晰，一定要动笔。
-            /// </summary>
-            /// <param name="head"></param>
-            /// <returns></returns>
-            public ListNode DeleteDuplicates(ListNode head)
+            public ListNode ReverseKGroup(ListNode head, int k)
             {
-                //创建哨兵节点
+                //建立哨兵节点
                 ListNode sentinel = new ListNode(-1);
                 sentinel.next = head;
 
-                //开启循环查找重复节点
                 ListNode temp = sentinel;
-                while (temp.next != null)
+                while (temp != null)
                 {
-                    //如果出现重复节点
-                    if (temp.next.next != null && temp.next.val == temp.next.next.val)
-                    {
-                        ListNode innerTemp = temp.next;
-                        int duplicatedVal = temp.next.val;
-                        //循环找到所有的重复值
-                        while (innerTemp.next != null && innerTemp.next.val == duplicatedVal)
-                        {
-                            innerTemp = innerTemp.next;
-                        }
-                        //删掉重复节点
-                        temp.next = innerTemp.next;
-                    }
+                    ListNode KPlusOneNode = null;
+                    if (IsGreaterThanOrEqualK(temp, k, out KPlusOneNode))
+                        temp = ReverseList(KPlusOneNode, temp.next, temp, k);
                     else
-                        temp = temp.next;
+                        break;
                 }
                 return sentinel.next;
+            }
+
+            private bool IsGreaterThanOrEqualK(ListNode head, int k, out ListNode KPlusOneNode)
+            {
+                ListNode temp = head;
+                int count = 0;
+                while (temp != null && count < k)
+                {
+                    count++;
+                    temp = temp.next;
+                }
+                KPlusOneNode = count == k ? temp.next : null;
+                return count == k;
+            }
+
+            private ListNode ReverseList(ListNode prev, ListNode head, ListNode after, int k)
+            {
+                ListNode curr = head;
+                //翻转计数
+                int count = 0;
+                //开始翻转
+                while (curr != null && count < k)
+                {
+                    count++;
+                    ListNode nextTemp = curr.next;
+                    curr.next = prev;
+                    prev = curr;
+                    curr = nextTemp;
+                }
+                //翻转完成后把链表接回去
+                after.next = prev;
+                return head;
             }
         }
     }
