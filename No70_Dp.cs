@@ -28,7 +28,21 @@ namespace LeetCode_70
 
     public class Solution
     {
-        /// TODO:通项公式
+        /// <summary>
+        /// 通项公式。通过总结可得 f(x) = f(x-1) + f(x-2), 然后退出特征方程 x² = x + 1(说实话，我没搞懂这个怎么推出来的)，再利用求根
+        /// 公式（2a分之负b加减根号下b平方减4ac）求得 x₁，x₂，设通解为 f(x) = c₁x₁ⁿ + c₂x₂ⁿ， 带入初始条件f(1) = 1, f(2) = 2 推出通项公式
+        /// 时间复杂度：O(logn)
+        /// 空间复杂度：O(1)
+        /// 这个又可以叫做菲波列切数列第n项求解
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public int ClimbStairs(int n)
+        {
+            double sqrt5 = Math.Sqrt(5);
+            double fibn = Math.Pow((1 + sqrt5) / 2, n + 1) - Math.Pow((1 - sqrt5) / 2, n + 1);
+            return (int)(fibn / sqrt5);
+        }
 
         /// TODO: 矩阵快速幂
 
@@ -39,20 +53,20 @@ namespace LeetCode_70
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public int ClimbStairs(int n)
-        {
-            int first = 0;
-            int second = 0;
-            int res = 1;
-            //因为最后一步可能跨了一级台阶，也可能跨了两级台阶，所以步数的组合就是前两个组合相加的和
-            //动态转移方程式 f(x) = f(x-1) + f(x-2)
-            for (int i = 1; i <= n; i++)
-            {
-                first = second;
-                second = res;
-                res = first + second;
-            }
-            return res;
-        }
+        //public int ClimbStairs(int n)
+        //{
+        //    int first = 0;
+        //    int second = 0;
+        //    int res = 1;
+        //    //因为最后一步可能跨了一级台阶，也可能跨了两级台阶，所以步数的组合就是前两个组合相加的和
+        //    //动态转移方程式 f(x) = f(x-1) + f(x-2)
+        //    for (int i = 1; i <= n; i++)
+        //    {
+        //        first = second;
+        //        second = res;
+        //        res = first + second;
+        //    }
+        //    return res;
+        //}
     }
 }
