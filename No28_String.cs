@@ -27,8 +27,9 @@ namespace LeetCode_28
     public class Solution
     {
         /// <summary>
-        /// KMP(Knuth-Morris-Pratt)算法
-        /// TODO:完成KMP算法
+        /// BM(Boyer-Moore)字符串搜索算法，坏字符和好后缀原则
+        /// 在用于查找子字符串的算法当中，BM（Boyer-Moore）算法被认为最高效的字符串搜索算法，它由Bob Boyer和J Strother Moore设计于1977年。 一般情况下，比KMP算法快3-5倍。
+        /// TODO:完成BM算法
         /// </summary>
         /// <param name="haystack"></param>
         /// <param name="needle"></param>
@@ -39,8 +40,8 @@ namespace LeetCode_28
         //}
 
         /// <summary>
-        /// BM(Boyer-Moore)字符串搜索算法，坏字符和好后缀原则
-        /// TODO:完成BM算法
+        /// KMP(Knuth-Morris-Pratt)算法
+        /// TODO:完成KMP算法
         /// </summary>
         /// <param name="haystack"></param>
         /// <param name="needle"></param>
