@@ -15,8 +15,8 @@ namespace LeetCode
             var solution = new Solution();
             while (true)
             {
-                //int input = int.Parse(Console.ReadLine());
-                //int input2 = int.Parse(Console.ReadLine());
+                int input = int.Parse(Console.ReadLine());
+                int input2 = int.Parse(Console.ReadLine());
                 //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
@@ -25,18 +25,18 @@ namespace LeetCode
                 //int?[] data = new int?[] { 10, 5, 15, null, null, 6, 20 };
                 //var tree = builder.BuildTree(data);
                 //var listNode = builder.BuildListNode(new int[] { 1, 4, 5 });
-                int[] nums1 = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
+                //int[] nums1 = new int[] { 2, 1, 4, 5, 3, 1, 1, 3 };
                 //int[] nums2 = new int[] { 10, 15, 20 };
                 //string input = "abc";
                 //string input2 = "ahbgdc";                
-                var res = solution.Massage(nums1);
+                var res = solution.UniquePaths(input, input2);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public int Massage(int[] nums)
+            public int UniquePaths(int m, int n)
             {
 
             }
