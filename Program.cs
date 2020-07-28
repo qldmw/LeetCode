@@ -26,18 +26,13 @@ namespace LeetCode
                 //var tree = builder.BuildTree(data);
                 //var listNode = builder.BuildListNode(new int[] { 1, 4, 5 });
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
-                //int[] nums1 = new int[] { 2, 1, 4, 5, 3, 1, 1, 3 };
+                int[] nums1 = new int[] { 2, 3, -2, 4 };
                 //int[] nums2 = new int[] { 10, 15, 20 };
                 //string input = "abc";
                 //string input2 = "ahbgdc";         
                 //string s = "leetcode";
-                //IList<string> wordDict = new List<string>() { "leet", "code" };
-                //string s = "applepenapple";
-                //IList<string> wordDict = new List<string>() { "apple", "pen" };
-                string s = "catsandog";
-                IList<string> wordDict = new List<string>() { "cats", "dog", "sand", "and", "cat" };
 
-                var res = solution.WordBreak(s, wordDict);
+                var res = solution.MaxProduct(nums1);
                 ConsoleX.WriteLine(res);
             }
         }
@@ -45,42 +40,63 @@ namespace LeetCode
         public class Solution
         {
             /// <summary>
-            /// 第一反应解，递归，然而超时
-            /// 时间复杂度：O(真不知道怎么算 OTL )
-            /// 空间复杂度：O(真不知道怎么算 OTL )
+            /// 动态规划优化，滚动变量。因为最大最小值计算只依赖上一个变量，是故可以对此做优化
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(1)
             /// </summary>
-            /// <param name="s"></param>
-            /// <param name="wordDict"></param>
+            /// <param name="nums"></param>
             /// <returns></returns>
-            public bool WordBreak(string s, IList<string> wordDict)
+            public int MaxProduct(int[] nums)
             {
-                _dic = new HashSet<string>(wordDict);
-                _maxWordLength = wordDict.Count != 0 ? wordDict.Max(t => t.Length) : 0;
-                Recurse(s);
-                return _res;
+                if (nums == null || nums.Length == 0)
+                    return 0;
+
+                int preMax = nums[0];
+                int preMin = nums[0];
+                int res = nums[0];
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    int curMax = Math.Max(Math.Max(preMax * nums[i], preMin * nums[i]), nums[i]);
+                    int curMin = Math.Min(Math.Min(preMax * nums[i], preMin * nums[i]), nums[i]);
+                    preMax = curMax;
+                    preMin = curMin;
+                    res = Math.Max(curMax, res);
+                }
+                return res;
             }
 
-            private HashSet<string> _dic;
-            private bool _res;
-            private int _maxWordLength;
+            /// <summary>
+            /// 动态规划。因为有负负得正，所以要把最小值存起来，说不好下一个是负值，要用最小值来乘起来试试。
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(n)
+            /// </summary>
+            /// <param name="nums"></param>
+            /// <returns></returns>
+            //public int MaxProduct(int[] nums)
+            //{
+            //    if (nums == null || nums.Length == 0)
+            //        return 0;
 
-            private void Recurse(string str)
-            {
-                if (_res)
-                    return;
+            //    int[] max = new int[nums.Length];
+            //    int[] min = new int[nums.Length];
 
-                if (_dic.Contains(str))
-                {
-                    _res = true;
-                    return;
-                }
-
-                for (int i = 0; i < str.Length && i < _maxWordLength; i++)
-                {
-                    if (_dic.Contains(str.Substring(0, i + 1)))
-                        Recurse(str.Substring(i + 1));
-                }
-            }
+            //    max[0] = nums[0];
+            //    min[0] = nums[0];
+            //    for (int i = 1; i < nums.Length; i++)
+            //    {
+            //        if (nums[i - 1] == 0)
+            //        {
+            //            max[i] = Math.Max(0, nums[i]);
+            //            min[i] = Math.Min(0, nums[i]);
+            //        }
+            //        else
+            //        {
+            //            max[i] = Math.Max(Math.Max(max[i - 1] * nums[i], min[i - 1] * nums[i]), nums[i]);
+            //            min[i] = Math.Min(Math.Min(max[i - 1] * nums[i], min[i - 1] * nums[i]), nums[i]);
+            //        }
+            //    }
+            //    return max.Max();
+            //}
         }
     }
 }
