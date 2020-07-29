@@ -43,7 +43,11 @@ namespace LeetCode
                 int[] dp = new int[s.Length];
                 for (int i = 0; i < s.Length; i++)
                 {
-
+                    if (s[i] == ')')
+                    {
+                        if (i > 0 && s[i - 1] == '(')
+                            dp[i] = 
+                    }
                 }
             }
 
