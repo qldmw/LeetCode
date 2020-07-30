@@ -14,7 +14,6 @@
 12.小根堆 - 代码实现 - No215  
 13.两边递归组合 - 二叉搜索树卡特兰数集合 - No95  
 
-
 ## 标记
 *未解决的疑问会留下标记：Unsolved Question*  
 *已解决的疑问会留下标记：Solved Question*  
@@ -22,6 +21,7 @@
 *经验总结：Experience*  
 *未做的计划：TODO*  
 *需要重做的题：REDO*  
+*重新复习的感想：REVIEW*  
 
 ## 资源
 .net core 2.2 系统自带数据结构：https://docs.microsoft.com/zh-cn/dotnet/api/system.collections.generic?view=netcore-2.2  
@@ -61,17 +61,6 @@
 |      119  | 54111 |
 |      122  | 52596 |
 |      124  | 51713 |
-
-
-
-
-
-
-
-
-
-
-
 
 
 刚好因为有一天在深入之前的算法，没有做新题，发现了有296人在这一天刷到了84以上。  
