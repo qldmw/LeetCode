@@ -22,6 +22,7 @@
 *未做的计划：TODO*  
 *需要重做的题：REDO*  
 *重新复习的感想：REVIEW*  
+*复习跳过标记： SKIP*  
 
 ## 资源
 .net core 2.2 系统自带数据结构：https://docs.microsoft.com/zh-cn/dotnet/api/system.collections.generic?view=netcore-2.2  
@@ -62,6 +63,8 @@
 |      122  | 52596 |
 |      124  | 51713 |
 |      125  | 51400 |
+|      125  | 51642 |
+
 
 
 

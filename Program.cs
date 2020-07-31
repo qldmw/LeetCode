@@ -17,8 +17,8 @@ namespace LeetCode
             {
                 //int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
-                string input = Console.ReadLine();
-                string input2 = Console.ReadLine();
+                //string input = Console.ReadLine();
+                //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
                 //var builder = new DataStructureBuilder();
@@ -26,11 +26,10 @@ namespace LeetCode
                 //var tree = builder.BuildTree(data);
                 //var listNode = builder.BuildListNode(new int[] { 1, 4, 5 });
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
-                //int[] nums1 = new int[] { 2, 3, -2, 4 };
+                //int[] nums1 = new int[] { 2, 1, -2, 3 };
                 //int[] nums2 = new int[] { 10, 15, 20 };
-                //string input = "abc";
-                //string input2 = "ahbgdc";         
-                //string s = "leetcode";
+                string input = "adceb";
+                string input2 = "*a*b";
                 var res = solution.IsMatch(input, input2);
                 ConsoleX.WriteLine(res);
             }

@@ -30,6 +30,11 @@ namespace LeetCode_16_11
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.07.31: 数组依次加入，加入过程中判断去重即可。
+    /// </summary>
+    
     public class Solution
     {
         /// <summary>

@@ -31,6 +31,43 @@ namespace LeetCode_I29
     /// Experience：代码不提前画好细节和边界，最后就会有一堆恶心的if来补漏，太丑陋了
     /// int[][] 是交错数组，一维空间不一定等长，所以也就不能定义定长的，二维数组是这样子的int[2,2]
     /// </summary>
+    public class Solution2
+    {
+        /// <summary>
+        /// REVIEW改进
+        /// 时间复杂度：O(n)
+        /// 空间复杂度：O(n)
+        /// 相同的思想，但是用更简洁的代码实现
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public int[] SpiralOrder(int[][] matrix)
+        {
+            if (matrix == null || matrix.Length == 0 || matrix[0].Length == 0)
+                return new int[0];
+
+            int rows = matrix.Length;
+            int cols = matrix[0].Length;
+            int total = rows * cols;
+            int[] res = new int[total];
+            bool[,] visited = new bool[rows, cols];
+            int[,] directions = new int[,] { { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 1 } };
+            int curDirection = 1;
+            //用x,y当坐标更容易理解
+            int x = 0, y = 0;
+            for (int i = 0; i < total; i++)
+            {
+                if (x >= 0 && x < cols && y >= 0 && y < rows)
+                    res[i] = matrix[x][y];
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// REVIEW
+    /// 2020.07.31: 题解里用0，1来代表方向，可以省不少代码。应该用visited代替trace作为访问路径数组名称。
+    /// </summary>
     public class Solution
     {
         /// <summary>

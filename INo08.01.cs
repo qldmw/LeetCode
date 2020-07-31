@@ -28,6 +28,11 @@ namespace LeetCode_08_01
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.07.31: 典型的动态规划，上的台阶由三种可能性构成，所以就可以推出当前的解就是前三步的和值。要注意的就是有可能会超过int最大值，需要使用long。
+    /// </summary>
+
     public class Solution
     {
         /// <summary>
