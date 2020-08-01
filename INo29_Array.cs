@@ -37,7 +37,10 @@ namespace LeetCode_I29
         /// REVIEW改进
         /// 时间复杂度：O(n)
         /// 空间复杂度：O(n)
-        /// 相同的思想，但是用更简洁的代码实现
+        /// 相同的思想，但是用更简洁的代码实现。
+        /// 有两个点要注意：
+        /// 1.对应到数组访问中的x，y的应该是反过来的，应该是 matrix[y][x]。
+        /// 2.走到下一步时，应该使用预测的方式，而不是直接走，应该如果走错了还要退出来才行，麻烦了
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns></returns>
@@ -51,16 +54,25 @@ namespace LeetCode_I29
             int total = rows * cols;
             int[] res = new int[total];
             bool[,] visited = new bool[rows, cols];
-            int[,] directions = new int[,] { { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 1 } };
-            int curDirection = 1;
+            int[,] directions = new int[,] { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
+            int curDirection = 0;
             //用x,y当坐标更容易理解
             int x = 0, y = 0;
             for (int i = 0; i < total; i++)
             {
-                if (x >= 0 && x < cols && y >= 0 && y < rows)
-                    res[i] = matrix[x][y];
-
+                //写入到答案数组中，标记已经走过
+                res[i] = matrix[y][x];
+                visited[y, x] = true;
+                //通过下一步来判断是否已经出界，出界则换方向
+                int nextX = x + directions[curDirection, 0];
+                int nextY = y + directions[curDirection, 1];
+                if (nextX < 0 || nextX >= cols || nextY < 0 || nextY >= rows || visited[nextY, nextX])
+                    curDirection = (curDirection + 1) % 4;
+                //走到下一步
+                x = x + directions[curDirection, 0];
+                y = y + directions[curDirection, 1];
             }
+            return res;
         }
     }
 
