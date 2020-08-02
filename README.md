@@ -9,7 +9,7 @@
 7.Boyer-Moore投票算法 - 高效统计过半数目数的算法 - No169  
 8.各字符串查找算法 - 字符串查找 - No28  
 9.各最长回文子串查找算法 - 回文子串查找 - No5  
-10.莫里斯(morris)遍历 - 二叉树遍历,二叉树线索化 - No94  
+10.中序遍历，莫里斯(morris)遍历法 - 二叉树遍历,二叉树线索化 - No94  
 11.传统快排，快排三数取中法 - 快排 - No215  
 12.小根堆 - 代码实现 - No215  
 13.两边递归组合 - 二叉搜索树卡特兰数集合 - No95  
@@ -23,6 +23,13 @@
 *需要重做的题：REDO*  
 *重新复习的感想：REVIEW*  
 *复习跳过标记： SKIP*  
+
+## 高频知识点
+前序遍历(Pre-order Traversal)：根结点 ---> 左子树 ---> 右子树  
+中序遍历(In-Order Traversal)：左子树---> 根结点 ---> 右子树  
+后序遍历(Post-Order Traversal)：左子树 ---> 右子树 ---> 根结点  
+排序：A m n = n! / (n - m)!  
+组合：C m n = n! / m!(n - m)!  
 
 ## 资源
 .net core 2.2 系统自带数据结构：https://docs.microsoft.com/zh-cn/dotnet/api/system.collections.generic?view=netcore-2.2  
@@ -65,6 +72,8 @@
 |      125  | 51400 |
 |      125  | 51642 |
 |      126  | 51312 |
+|      126  | 51512 |
+
 
 
 

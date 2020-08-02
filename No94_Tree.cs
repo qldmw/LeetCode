@@ -50,66 +50,66 @@ namespace LeetCode_94
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public IList<int> InorderTraversal(TreeNode root)
-        {
-            /// 算法实现思想：
-            /// Step 1: 将当前节点current初始化为根节点
-            /// Step 2: While current不为空，
-            /// 若current没有左子节点
-            ///     a.将current添加到输出
-            ///     b.进入右子树，亦即, current = current.right
-            /// 否则
-            ///     a.在current的左子树中，令current成为最右侧节点的右子节点
-            ///     b.进入左子树，亦即，current = current.left
-            IList<int> res = new List<int>();
-            TreeNode curr = root;
-            TreeNode pre;
-            while (curr != null)
-            {
-                if (curr.left == null)
-                {
-                    res.Add(curr.val);
-                    curr = curr.right; // move to next right node
-                }
-                else
-                { // has a left subtree
-                    pre = curr.left;
-                    while (pre.right != null)
-                    { // find rightmost
-                        pre = pre.right;
-                    }
-                    pre.right = curr; // put cur after the pre node
-                    TreeNode temp = curr; // store cur node
-                    curr = curr.left; // move cur to the top of the new tree
-                    temp.left = null; // original cur left be null, avoid infinite loops
-                }
-            }
-            return res;
-        }
+        //public IList<int> InorderTraversal(TreeNode root)
+        //{
+        //    /// 算法实现思想：
+        //    /// Step 1: 将当前节点current初始化为根节点
+        //    /// Step 2: While current不为空，
+        //    /// 若current没有左子节点
+        //    ///     a.将current添加到输出
+        //    ///     b.进入右子树，亦即, current = current.right
+        //    /// 否则
+        //    ///     a.在current的左子树中，令current成为最右侧节点的右子节点
+        //    ///     b.进入左子树，亦即，current = current.left
+        //    IList<int> res = new List<int>();
+        //    TreeNode curr = root;
+        //    TreeNode pre;
+        //    while (curr != null)
+        //    {
+        //        if (curr.left == null)
+        //        {
+        //            res.Add(curr.val);
+        //            curr = curr.right; // move to next right node
+        //        }
+        //        else
+        //        { // has a left subtree
+        //            pre = curr.left;
+        //            while (pre.right != null)
+        //            { // find rightmost
+        //                pre = pre.right;
+        //            }
+        //            pre.right = curr; // put cur after the pre node
+        //            TreeNode temp = curr; // store cur node
+        //            curr = curr.left; // move cur to the top of the new tree
+        //            temp.left = null; // original cur left be null, avoid infinite loops
+        //        }
+        //    }
+        //    return res;
+        //}
 
         /// <summary>
         /// 官方给的简短的迭代解法
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        //public IList<int> InorderTraversal(TreeNode root)
-        //{
-        //    IList<int> res = new List<int>();
-        //    Stack<TreeNode> stack = new Stack<TreeNode>();
-        //    TreeNode curr = root;
-        //    while (curr != null || stack.Count > 0)
-        //    {
-        //        while (curr != null)
-        //        {
-        //            stack.Push(curr);
-        //            curr = curr.left;
-        //        }
-        //        curr = stack.Pop();
-        //        res.Add(curr.val);
-        //        curr = curr.right;
-        //    }
-        //    return res;
-        //}
+        public IList<int> InorderTraversal(TreeNode root)
+        {
+            IList<int> res = new List<int>();
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            TreeNode curr = root;
+            while (curr != null || stack.Count > 0)
+            {
+                while (curr != null)
+                {
+                    stack.Push(curr);
+                    curr = curr.left;
+                }
+                curr = stack.Pop();
+                res.Add(curr.val);
+                curr = curr.right;
+            }
+            return res;
+        }
 
         /// <summary>
         /// 迭代完成中序遍历
