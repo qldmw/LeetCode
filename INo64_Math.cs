@@ -21,6 +21,11 @@ namespace LeetCode_I64
     //}
 
     /// <summary>
+    /// REVIEW
+    /// 2020.08.03: 要求的难点就是不能使用if等关键字，但是其实也是用了，只不过是用了另外的方法躲开了检测而已。
+    /// </summary>
+
+    /// <summary>
     /// Unsolved Question: 为什么使用了类中全局的变量，避免了递归每次申请变量，反而内存消耗变大了。这个递归应该会申请很多个bool才对啊
     /// </summary>
     public class Solution
