@@ -17,8 +17,8 @@ namespace LeetCode
             {
                 //int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
-                string input = Console.ReadLine();
-                string input2 = Console.ReadLine();
+                //string input = Console.ReadLine();
+                //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
                 //var builder = new DataStructureBuilder();
@@ -30,35 +30,48 @@ namespace LeetCode
                 //int[] nums2 = new int[] { 10, 15, 20 };
                 //string input = "adceb";
                 //string input2 = "*a*b";
-                var res = solution.IsMatch(input, input2);
+                int[][] data = new int[][]
+                {
+                    new int[] {1, 0},
+                    new int[] {2, 1},
+                };
+                var res = solution.CanFinish(2, data);
                 ConsoleX.WriteLine(res);
             }
         }
 
+        /// <summary>
+        /// REDO
+        /// </summary>
         public class Solution
         {
-            public bool IsMatch(string s, string p)
+            public bool CanFinish(int numCourses, int[][] prerequisites)
             {
-                bool[,] dp = new bool[s.Length + 1, p.Length + 1];
-                dp[0, 0] = true;
-                for (int i = 1; i <= p.Length; i++)
+                //把数组转化为字典，方便后面查找。int 是起点，List<int>是终点列表
+                Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+                for (int i = 0; i < prerequisites.Length; i++)
                 {
-                    if (p[i - 1] == '*')
-                        dp[0, i] = true;
+                    if (prerequisites[i].Length == 0)
+                        continue;
+
+                    //弧的起点和终点
+                    int start = prerequisites[i][1], end = prerequisites[i][0];
+                    if (!map.ContainsKey(start))
+                        map.Add(start, new List<int>() { end });
                     else
-                        break;
+                        map[start].Add(end);
                 }
-                for (int i = 1; i <= s.Length; i++)
+                foreach (var key in map.Keys)
                 {
-                    for (int j = 1; j <= p.Length; j++)
-                    {
-                        if (p[j - 1] == '*')
-                            dp[i, j] = dp[i - 1, j] || dp[i, j - 1];
-                        else if (p[j - 1] == '?' || s[i - 1] == p[j - 1])
-                            dp[i, j] = dp[i - 1, j - 1];
-                    }
+                    if (FindCourse(map, key, numCourses))
+                        return true;
                 }
-                return dp[s.Length, p.Length];
+                return false;
+            }
+
+            private bool FindCourse(Dictionary<int, List<int>> map, int start, int numCourses)
+            {
+
             }
         }
     }

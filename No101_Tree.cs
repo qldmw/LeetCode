@@ -25,6 +25,10 @@ namespace LeetCode_101
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.08.05: 第一反应还是递归。迭代可以考虑一对一对进入，一对一对出来对比，本质也是一样的。
+    /// </summary>
     public class Solution
     {
         /// <summary>

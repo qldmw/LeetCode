@@ -35,6 +35,10 @@ namespace LeetCode_102
     /// 具体介绍：https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/local-functions#local-functions-vs-lambda-expressions
     /// </summary>
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.08.05: 优化了广度优先方法，使用当前层节点计数的办法代替了再 new 一个 nextQueue数组。
+    /// </summary>
     public class Solution
     {
         /// <summary>
@@ -70,44 +74,38 @@ namespace LeetCode_102
         /// <summary>
         /// 广度优先解法。一层一层地剥开，记录
         /// 时间复杂度：O(n)
-        /// 空间复杂度：O(n)，用了两个队列
+        /// 空间复杂度：O(n)
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
         //public IList<IList<int>> LevelOrder(TreeNode root)
         //{
         //    IList<IList<int>> res = new List<IList<int>>();
-        //    Queue<TreeNode> cur = new Queue<TreeNode>();
-        //    Queue<TreeNode> next = new Queue<TreeNode>();
         //    IList<int> curRes = new List<int>();
+        //    Queue<TreeNode> cur = new Queue<TreeNode>();
 
-        //    cur.Enqueue(root);
+        //    if (root != null)
+        //        cur.Enqueue(root);
         //    while (cur.Count > 0)
         //    {
-        //        var temp = cur.Dequeue();
-        //        if (temp == null)
-        //            continue;
-        //        //加入到当前行结果中
-        //        curRes.Add(temp.val);
-
-        //        //把左右子树加入到待循环队列中
-        //        if (temp.left != null)
-        //            next.Enqueue(temp.left);
-        //        if (temp.right != null)
-        //            next.Enqueue(temp.right);
-
-        //        //当前队列循环完成时，把待循环队列赋值给当前队列
-        //        if (cur.Count == 0)
+        //        int currLevelNodesNum = cur.Count;
+        //        for (int i = 0; i < currLevelNodesNum; i++)
         //        {
-        //            cur = next;
-        //            next = new Queue<TreeNode>();
-
-        //            if (curRes.Count != 0)
+        //            var temp = cur.Dequeue();
+        //            if (temp != null)
         //            {
-        //                res.Add(curRes);
-        //                curRes = new List<int>();
-        //            }
+        //                //加入到“当前行结果”
+        //                curRes.Add(temp.val);
+        //                //把左右子树加入到队列中
+        //                if (temp.left != null)
+        //                    cur.Enqueue(temp.left);
+        //                if (temp.right != null)
+        //                    cur.Enqueue(temp.right);
+        //            }   
         //        }
+        //        res.Add(curRes);
+        //        //重新 new 一个内存空间给“当前行结果”
+        //        curRes = new List<int>();
         //    }
         //    return res;
         //}

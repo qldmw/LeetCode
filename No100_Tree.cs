@@ -27,6 +27,10 @@ namespace LeetCode_100
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.08.05: 深度优先的递归，可以在获得结果后避免进一步计算。我的第一反应还是用全局的递归变量，但其实不好，应该先考虑使用 && 和 || 来逻辑短路。
+    /// </summary>
     public class Solution
     {
         /// <summary>
