@@ -32,7 +32,7 @@ namespace LeetCode_5
         //TODO: Manacher算法，据说和KMP类似，又称为马拉车算法
 
         /// <summary>
-        /// 中心扩展算法。找到问题的题眼，没有使用特别的方法，不想动态规划这种是一套思想
+        /// 中心扩展算法。找到问题的题眼，没有使用特别的方法。不像动态规划是一套思想
         /// 时间复杂度：O(n²)
         /// 空间复杂度：O(1)
         /// 测试执行效率远高于动态规划，112ms, 23.1mb; dp 324ms, 41.8mb
@@ -42,7 +42,7 @@ namespace LeetCode_5
         public string LongestPalindrome(string s)
         {
             if (s == null || s.Length < 1)
-                return string.Empty; ;
+                return string.Empty;
             int start = 0, end = 0;
             for (int i = 0; i < s.Length; i++)
             {
@@ -73,7 +73,7 @@ namespace LeetCode_5
         /// 动态规划
         /// 时间复杂度：O(n²)
         /// 空间复杂度：O(n²)
-        /// 花了我好些世界，是一道经典的动态规划思想锻炼题
+        /// 花了我好些时间，是一道经典的动态规划思想锻炼题
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>

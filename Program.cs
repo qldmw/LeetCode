@@ -34,66 +34,27 @@ namespace LeetCode
                 {
                     //new int[] {1, 0},
                     //new int[] {2, 1},
-                    
+
                     //new int[] {1, 0},
                     //new int[] {0, 1},
-                    
+
+                    //new int[] {1, 0},
+                    //new int[] {1, 2},
+                    //new int[] {0, 1},
+
                     new int[] {1, 0},
-                    new int[] {1, 2},
-                    new int[] {0, 1},
+                    new int[] {2, 6},
+                    new int[] {1, 7},
+                    new int[] {5, 1},
+                    new int[] {6, 4},
+                    new int[] {7, 0},
+                    new int[] {0, 5},
                 };
-                var res = solution.CanFinish(3, data);
+                var res = solution.CanFinish(8, data);
                 ConsoleX.WriteLine(res);
             }
         }
 
-        public class Solution
-        {
-            public bool CanFinish(int numCourses, int[][] prerequisites)
-            {
-                if (prerequisites == null || prerequisites.Length == 0)
-                    return true;
-
-                //把数组转化为字典，方便后面查找。int 是起点，List<int>是终点列表
-                Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
-                //记录在被依赖位置出现过的课程
-                HashSet<int> hash = new HashSet<int>();
-                for (int i = 0; i < prerequisites.Length; i++)
-                {
-                    if (prerequisites[i].Length == 0)
-                        continue;
-
-                    //弧的起点和终点
-                    int start = prerequisites[i][1], end = prerequisites[i][0];
-                    hash.Add(end);
-                    if (!map.ContainsKey(start))
-                        map.Add(start, new List<int>() { end });
-                    else
-                        map[start].Add(end);
-                }
-                //先尝试没有割裂部分的，或许就没有这个可能性的用例
-                foreach (var key in map.Keys)
-                {
-                    if (!hash.Contains(key) && FindCourse(map, key, numCourses))
-                        return true;
-                }
-                return false;
-            }
-
-            private bool FindCourse(Dictionary<int, List<int>> map, int start, int numCourses)
-            {
-                if (!map.ContainsKey(start))
-                    return numCourses >= 1;
-                if (numCourses < 1)
-                    return false;
-
-                foreach (var end in map[start])
-                {
-                    if (!FindCourse(map, end, numCourses - 1))
-                        return false;
-                }
-                return true;
-            }
-        }
+        
     }
 }
