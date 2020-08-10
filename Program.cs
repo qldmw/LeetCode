@@ -17,7 +17,7 @@ namespace LeetCode
             {
                 //int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
-                //string input = Console.ReadLine();
+                string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
@@ -30,31 +30,37 @@ namespace LeetCode
                 //int[] nums2 = new int[] { 10, 15, 20 };
                 //string input = "adceb";
                 //string input2 = "*a*b";
-                int[][] data = new int[][]
-                {
-                    //new int[] {1, 0},
-                    //new int[] {2, 1},
-
-                    //new int[] {1, 0},
-                    //new int[] {0, 1},
-
-                    //new int[] {1, 0},
-                    //new int[] {1, 2},
-                    //new int[] {0, 1},
-
-                    new int[] {1, 0},
-                    new int[] {2, 6},
-                    new int[] {1, 7},
-                    new int[] {5, 1},
-                    new int[] {6, 4},
-                    new int[] {7, 0},
-                    new int[] {0, 5},
-                };
-                var res = solution.CanFinish(8, data);
+                var res = solution.CountBinarySubstrings(input);
                 ConsoleX.WriteLine(res);
             }
         }
 
-        
+        public class Solution
+        {
+            /// <summary>
+            /// 第一反应解，以当前字符和上一个字符不同作为触发条件，累计计数
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(1)
+            /// </summary>
+            /// <param name="s"></param>
+            /// <returns></returns>
+            public int CountBinarySubstrings(string s)
+            {
+                int oneCount = 0;
+                int zeroCount = 0;
+                int res = 0;
+                for (int i = 0; i < s.Length; i++)
+                {
+                    if (i - 1 >= 0 && s[i - 1] != s[i])
+                    {
+                        res += Math.Min(oneCount, zeroCount);
+                        _ = s[i] == '0' ? zeroCount = 1 : oneCount = 1;
+                    }
+                    else
+                        _ = s[i] == '0' ? zeroCount++ : oneCount++;
+                }
+                return res + Math.Min(oneCount, zeroCount);
+            }
+        }
     }
 }
