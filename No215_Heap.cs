@@ -62,7 +62,7 @@ namespace LeetCode_215
 
             MedianOfThree(nums, left, right);
             //枢纽
-            int pivot = right - 1;
+            int pivot = left + 1;
             //左右指针，用于交换（使用了三数取中法，右指针放在右边第二个了）
             int l = left, r = pivot;
             while (l < r)
