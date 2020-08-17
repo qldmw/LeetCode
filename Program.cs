@@ -38,10 +38,71 @@ namespace LeetCode
 
         public class Solution
         {
+            /// <summary>
+            /// 合并排序，典型分治(divide and conquer)
+            /// </summary>
+            /// <param name="arr"></param>
+            /// <returns></returns>
             public int[] MergeSort(int[] arr)
             {
-                
+                Divide(arr, 0, arr.Length - 1);
                 return arr;
+            }
+
+            private void Divide(int[] arr, int left, int right)
+            {
+                //长度大于1
+                if (left < right)
+                {
+                    int mid = (left + right) / 2;
+                    Divide(arr, left, mid);
+                    Divide(arr, mid + 1, right);
+                    Conquer(arr, left, mid, right);
+                }
+            }
+
+            private void Conquer(int[] arr, int left, int mid, int right)
+            {
+                int[] temp = new int[right - left + 1];
+                //临时数组的指针
+                int tempIndex = 0;
+                //两部分的指针
+                int index1 = left, index2 = mid + 1;
+                //把已经排序的两部分合并起来
+                while (index1 <= mid || index2 <= right)
+                {
+                    if (index1 > mid)
+                    {
+                        temp[tempIndex] = arr[index2];
+                        index2++;
+                        tempIndex++;
+                    }
+                    else if (index2 > right)
+                    {
+                        temp[tempIndex] = arr[index1];
+                        index1++;
+                        tempIndex++;
+                    }
+                    else
+                    {
+                        if (arr[index1] < arr[index2])
+                        {
+                            temp[tempIndex] = arr[index1];
+                            index1++;
+                        }
+                        else
+                        {
+                            temp[tempIndex] = arr[index2];
+                            index2++;
+                        }
+                        tempIndex++;
+                    }
+                }
+                //把临时数组中排好序的数组赋值回原数组
+                for (int i = left; i <= right; i++)
+                {
+                    arr[i] = temp[i - left];
+                }
             }
         }
     }
