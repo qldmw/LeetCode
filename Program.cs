@@ -21,17 +21,17 @@ namespace LeetCode
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
-                //var builder = new DataStructureBuilder();
-                //int?[] data = new int?[] { 1, 2, 5, 3, 4, null, 6 };
-                //var tree = builder.BuildTree(data);
+                var builder = new DataStructureBuilder();
+                int?[] data = new int?[] { 1, 2, 3, 4, 5, null, 6, null, null, 7, 8 };
+                var tree = builder.BuildTree(data);
                 //var listNode = builder.BuildListNode(new int[] { 1, 4, 5 });
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
                 //int[] nums1 = new int[] { 2, 1, 7, 5, 6, 4, 3 };
-                int[] nums1 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
+                //int[] nums1 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
                 //int[] nums2 = new int[] { 10, 15, 20 };
                 //string input = "adceb";
                 //string input2 = "*a*b";
-                var res = solution.MergeSort(nums1);
+                var res = solution.PostorderTraversal(tree);
                 ConsoleX.WriteLine(res);
             }
         }
@@ -39,70 +39,70 @@ namespace LeetCode
         public class Solution
         {
             /// <summary>
-            /// 合并排序，典型分治(divide and conquer)
+            /// 后序遍历（左右根）
             /// </summary>
-            /// <param name="arr"></param>
+            /// <param name="tree"></param>
             /// <returns></returns>
-            public int[] MergeSort(int[] arr)
+            public int[] PostorderTraversal(TreeNode tree)
             {
-                Divide(arr, 0, arr.Length - 1);
-                return arr;
+                if (tree == null)
+                    return new int[0];
+
+                List<int> res = new List<int>();
+                //Recurse(tree, res);
+                //return res.ToArray();
+                return Iterate(tree).ToArray();
             }
 
-            private void Divide(int[] arr, int left, int right)
+            /// <summary>
+            /// 递归实现
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(logn)。最差跌落到 O(n)，既一条链的树的情况下
+            /// </summary>
+            /// <param name="tree"></param>
+            /// <param name="res"></param>
+            private void Recurse(TreeNode tree, List<int> res)
             {
-                //长度大于1
-                if (left < right)
-                {
-                    int mid = (left + right) / 2;
-                    Divide(arr, left, mid);
-                    Divide(arr, mid + 1, right);
-                    Conquer(arr, left, mid, right);
-                }
+                //递归左子树
+                if (tree.left != null)
+                    Recurse(tree.left, res);
+                //递归右子树
+                if (tree.right != null)
+                    Recurse(tree.right, res);
+                //存入根节点
+                res.Add(tree.val);
             }
 
-            private void Conquer(int[] arr, int left, int mid, int right)
+            /// <summary>
+            /// 迭代实现
+            /// 时间复杂度：O(n)
+            /// 空间复杂度：O(logn),最差 O(n)
+            /// </summary>
+            /// <param name="tree"></param>
+            /// <returns></returns>
+            private List<int> Iterate(TreeNode tree)
             {
-                int[] temp = new int[right - left + 1];
-                //临时数组的指针
-                int tempIndex = 0;
-                //两部分的指针
-                int index1 = left, index2 = mid + 1;
-                //把已经排序的两部分合并起来
-                while (index1 <= mid || index2 <= right)
+                if (tree == null)
+                    return new List<int>();
+
+                Stack<TreeNode> stack = new Stack<TreeNode>();
+                //使用 LinkedList 可以始终在数组首部添加，避免了使用 List 之后最后再 reverse。
+                LinkedList<int> res = new LinkedList<int>();
+                stack.Push(tree);
+                while (stack.Count != 0)
                 {
-                    if (index1 > mid)
+                    TreeNode node = stack.Pop();
+                    res.AddFirst(node.val);
+                    if (node.left != null)
                     {
-                        temp[tempIndex] = arr[index2];
-                        index2++;
-                        tempIndex++;
+                        stack.Push(node.left);
                     }
-                    else if (index2 > right)
+                    if (node.right != null)
                     {
-                        temp[tempIndex] = arr[index1];
-                        index1++;
-                        tempIndex++;
-                    }
-                    else
-                    {
-                        if (arr[index1] < arr[index2])
-                        {
-                            temp[tempIndex] = arr[index1];
-                            index1++;
-                        }
-                        else
-                        {
-                            temp[tempIndex] = arr[index2];
-                            index2++;
-                        }
-                        tempIndex++;
+                        stack.Push(node.right);
                     }
                 }
-                //把临时数组中排好序的数组赋值回原数组
-                for (int i = left; i <= right; i++)
-                {
-                    arr[i] = temp[i - left];
-                }
+                return res.ToList();
             }
         }
     }

@@ -35,7 +35,10 @@ namespace LeetCode.ClassicAlgorithm
         public class Solution
         {
             /// <summary>
-            /// 合并排序，典型分治(divide and conquer)
+            /// 归并排序，典型分治(divide and conquer)
+            /// 时间复杂度：O(nlogn)
+            /// 空间复杂度：O(n)，因为递归是 void，所以使用完空间就释放掉了，而空间中只用了一个和当前传入数组等长的辅助数组，所以是 O(n)
+            /// 时间复杂度虽然和快排一样，也是 O(nlogn)，但是平均会比快排慢上不少，快排依然是最快的排序算法
             /// </summary>
             /// <param name="arr"></param>
             /// <returns></returns>

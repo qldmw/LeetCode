@@ -34,6 +34,14 @@ namespace LeetCode.ClassicAlgorithm
 
         public class Solution
         {
+            /// <summary>
+            /// 快速排序
+            /// 时间复杂度：O(nlogn)
+            /// 空间复杂度：O(1)
+            /// 最快的排序算法，不过有缺陷，如果使用传统的 partition，在针对已排序的数组的情况下，算法会沦为冒泡排序，时间复杂度沦为 O(n²)。使用三数取中可以完美避开这个问题
+            /// </summary>
+            /// <param name="arr"></param>
+            /// <returns></returns>
             public int[] QuickSort(int[] arr)
             {
                 QuickSort(arr, 0, arr.Length - 1);
