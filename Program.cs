@@ -38,72 +38,7 @@ namespace LeetCode
 
         public class Solution
         {
-            /// <summary>
-            /// 后序遍历（左右根）
-            /// </summary>
-            /// <param name="tree"></param>
-            /// <returns></returns>
-            public int[] PostorderTraversal(TreeNode tree)
-            {
-                if (tree == null)
-                    return new int[0];
-
-                List<int> res = new List<int>();
-                //Recurse(tree, res);
-                //return res.ToArray();
-                return Iterate(tree).ToArray();
-            }
-
-            /// <summary>
-            /// 递归实现
-            /// 时间复杂度：O(n)
-            /// 空间复杂度：O(logn)。最差跌落到 O(n)，既一条链的树的情况下
-            /// </summary>
-            /// <param name="tree"></param>
-            /// <param name="res"></param>
-            private void Recurse(TreeNode tree, List<int> res)
-            {
-                //递归左子树
-                if (tree.left != null)
-                    Recurse(tree.left, res);
-                //递归右子树
-                if (tree.right != null)
-                    Recurse(tree.right, res);
-                //存入根节点
-                res.Add(tree.val);
-            }
-
-            /// <summary>
-            /// 迭代实现
-            /// 时间复杂度：O(n)
-            /// 空间复杂度：O(logn),最差 O(n)
-            /// </summary>
-            /// <param name="tree"></param>
-            /// <returns></returns>
-            private List<int> Iterate(TreeNode tree)
-            {
-                if (tree == null)
-                    return new List<int>();
-
-                Stack<TreeNode> stack = new Stack<TreeNode>();
-                //使用 LinkedList 可以始终在数组首部添加，避免了使用 List 之后最后再 reverse。
-                LinkedList<int> res = new LinkedList<int>();
-                stack.Push(tree);
-                while (stack.Count != 0)
-                {
-                    TreeNode node = stack.Pop();
-                    res.AddFirst(node.val);
-                    if (node.left != null)
-                    {
-                        stack.Push(node.left);
-                    }
-                    if (node.right != null)
-                    {
-                        stack.Push(node.right);
-                    }
-                }
-                return res.ToList();
-            }
+            
         }
     }
 }
