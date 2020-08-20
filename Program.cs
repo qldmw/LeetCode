@@ -31,36 +31,38 @@ namespace LeetCode
                 //int[] nums2 = new int[] { 10, 15, 20 };
                 //string input = "adceb";
                 //string input2 = "*a*b";
-                List<List<int>> data = new List<List<int>>()
-                {
-                    new List<int>(){ 1,2,3,4,5,6,5 },
-                    new List<int>(){ 1,2,3,4,5,6,6 },
-                    new List<int>(){ 1,2,3,4,5,6,7 },
-                    new List<int>(){ 1,2,3,4,5,6,4 },
-                    new List<int>(){ 1,2,3,4,5,6,3 }
-                };
-                var res = solution.GetMaxSumIntList(data);
+                //int[] coins = new int[] { 1, 2, 5 };//11
+                int[] coins = new int[] { 186, 419, 83, 408 };//6249
+                var res = solution.CoinChange(coins, 6249);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public List<int> GetMaxSumIntList(List<List<int>> data)
+            public int CoinChange(int[] coins, int amount)
             {
-                List<int> sumList = data.Select(s => s.Sum()).ToList();
+                if (amount == 0)
+                    return 0;
 
-                int max = int.MinValue;
-                int maxIndex = -1;
-                for (int i = 0; i < sumList.Count; i++)
+                int[] dp = new int[amount + 1];
+                for (int i = 0; i < amount; i++)
                 {
-                    if (sumList[i] > max)
+                    if (i == 0 || dp[i] != 0)
                     {
-                        max = sumList[i];
-                        maxIndex = i;
+                        foreach (long coin in coins)
+                        {
+                            if (i + coin <= amount)
+                            {
+                                if (dp[i + coin] == 0)
+                                    dp[i + coin] = dp[i] + 1;
+                                else
+                                    dp[i + coin] = Math.Min(dp[i] + 1, dp[i + coin]);
+                            }
+                        }
                     }
                 }
-                return data[maxIndex];
+                return dp[amount] == 0 ? -1 : dp[amount];
             }
         }
     }
