@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace LeetCode.Interview
@@ -79,6 +80,33 @@ namespace LeetCode.Interview
         }
 
         //3.数组里面找子数组 满足子数组求和最大
+        public List<int> GetMaxSumIntList(List<List<int>> data)
+        {
+            ////测试用例
+            //List<List<int>> data = new List<List<int>>()
+            //    {
+            //        new List<int>(){ 1,2,3,4,5,6,5 },
+            //        new List<int>(){ 1,2,3,4,5,6,6 },
+            //        new List<int>(){ 1,2,3,4,5,6,7 },
+            //        new List<int>(){ 1,2,3,4,5,6,4 },
+            //        new List<int>(){ 1,2,3,4,5,6,3 }
+            //    };
+            //var res = solution.GetMaxSumIntList(data);
+            //ConsoleX.WriteLine(res);
+            List<int> sumList = data.Select(s => s.Sum()).ToList();
+
+            int max = int.MinValue;
+            int maxIndex = -1;
+            for (int i = 0; i < sumList.Count; i++)
+            {
+                if (sumList[i] > max)
+                {
+                    max = sumList[i];
+                    maxIndex = i;
+                }
+            }
+            return data[maxIndex];
+        }
 
         //4.最长公共前缀
 
