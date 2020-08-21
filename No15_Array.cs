@@ -64,7 +64,6 @@ namespace LeetCode_15
                     else
                         mid++;
                 }
-
             }
             return res;
         }
