@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LeetCode.Interview
 {
@@ -273,8 +274,70 @@ namespace LeetCode.Interview
         }
 
         //8.找两个字符串中相同字符串的最大长度
+        public int LongestCommonStringLength(string strA, string strB)
+        {
+            ////测试用例
+            //string input = "abcbefga";
+            //string input2 = "dbefga";
+            //var res = solution.LongestCommonString(input, input2);
+            //ConsoleX.WriteLine(res);
+
+            int maxlen = 0;
+            // 1.区分出最长和最短字符串
+            string shorter = strA.Length < strB.Length ? strA : strB;
+            string longer = strA.Length >= strB.Length ? strA : strB;
+            // 2.遍历最短字符串
+            for (int i = 0; i < shorter.Length; i++)
+            {
+                // 3.依次匹配最长字符串，获得最长的公共字符串
+                MatchLonger(shorter, longer, i);
+            }
+            return maxlen;
+
+            void MatchLonger(string s, string l, int sIndex)
+            {
+                for (int i = 0; i < l.Length; i++)
+                {
+                    //如果shorter中的字符和longer中的匹配上了，就开始往后计算最长串
+                    if (s[sIndex] == l[i])
+                    {
+                        for (int j = 0; j < s.Length - sIndex && j < l.Length - i; j++)
+                        {
+                            //shorter longer对应字符不相等就跳出
+                            if (s[sIndex + j] != l[i + j])
+                                break;
+                            else
+                                maxlen = Math.Max(maxlen, j + 1);
+                        }
+                    }
+                }
+            }
+        }
 
         //9.数组最大合子集
+        public int[] BiggestSubset(int[][] data)
+        {
+            //测试用例
+            //int[] nums1 = new int[] { 2, 1, 7, 5, 6, 4, 3 };
+            //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
+            //int[] nums3 = new int[] { 10, 15, 20 };
+            //var data = new int[][] { nums1, nums2, nums3 };
+            //var res = solution.BiggestSubset(data);
+            //ConsoleX.WriteLine(res);
+
+            int[] res = null;
+            int max = int.MinValue;
+            for (int i = 0; i < data.Length; i++)
+            {
+                int sum = data[i].Sum();
+                if (sum > max)
+                {
+                    max = sum;
+                    res = data[i];
+                }
+            }
+            return res;
+        }
 
         //10.反转数组
         public int[] ReverseArray(int[] arr)
@@ -310,6 +373,60 @@ namespace LeetCode.Interview
         // Step3：求每对小文件ai和bi中相同的url时，可以把ai的url存储到hash_set/hash_map中。然后遍历bi的每个url，看其是否在刚才构建的hash_set中，如果是，那么就是共同的url，存到文件里面就可以了。
 
         //13.最长字符串子集
+        // 和 8. 类似，不返回长度，返回最长的集合即可
+        public List<string> LongestCommonString(string strA, string strB)
+        {
+            ////测试用例
+            //string input = "abcbefga";
+            //string input2 = "dbefga";
+            //var res = solution.LongestCommonString(input, input2);
+            //ConsoleX.WriteLine(res);
+
+            List<string> res = new List<string>();
+            // 1.区分出最长和最短字符串
+            string shorter = strA.Length < strB.Length ? strA : strB;
+            string longer = strA.Length >= strB.Length ? strA : strB;
+            // 2.遍历最短字符串
+            for (int i = 0; i < shorter.Length; i++)
+            {
+                // 3.依次匹配最长字符串，获得最长的公共字符串
+                MatchLonger(shorter, longer, i);
+            }
+            return res;
+
+            void MatchLonger(string s, string l, int sIndex)
+            {
+                for (int i = 0; i < l.Length; i++)
+                {
+                    //如果shorter中的字符和longer中的匹配上了，就开始往后计算最长串
+                    if (s[sIndex] == l[i])
+                    {
+                        for (int j = 0; j < s.Length - sIndex && j < l.Length - i; j++)
+                        {
+                            //shorter longer对应字符不相等就跳出
+                            if (s[sIndex + j] != l[i + j])
+                                break;
+                            else
+                            {
+                                if (res.Count == 0)
+                                    res.Add(s.Substring(sIndex, j + 1));
+                                else
+                                {
+                                    //如果当前子串长于结果集中的字符串，就清空结果
+                                    if (j + 1 > res[0].Length)
+                                    {
+                                        res.Clear();
+                                        res.Add(s.Substring(sIndex, j + 1));
+                                    }
+                                    else if (j + 1 == res[0].Length)
+                                        res.Add(s.Substring(sIndex, j + 1));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         //14.Money changing problem
         public int CoinChange(int[] coins, int amount)
@@ -347,7 +464,44 @@ namespace LeetCode.Interview
         }
 
         //15.Longest increasing subsequence
+        // leetcode 300
 
         //16.Missing integer problem
+        // leetcode 41
+
+        //17.字符串相加
+        public string AddStrings(string num1, string num2)
+        {
+            if (string.IsNullOrEmpty(num1))
+                return num2;
+            else if (string.IsNullOrEmpty(num2))
+                return num1;
+
+            int length1 = num1.Length;
+            int length2 = num2.Length;
+            int loop = Math.Max(length1, length2);
+            char[] res = new char[loop];
+            int carry = 0;
+            for (int i = 0; i < loop; i++)
+            {
+                int singleDigit1 = length1 - 1 - i < 0 ? 0 : num1[length1 - 1 - i] - '0';
+                int singleDigit2 = length2 - 1 - i < 0 ? 0 : num2[length2 - 1 - i] - '0';
+                int num = carry + singleDigit1 + singleDigit2;
+
+                carry = num / 10;
+                res[loop - 1 - i] = (char)(num % 10 + '0');
+            }
+            return carry == 0 ? new string(res) : "1" + new string(res);
+        }
+
+        //18.开放性问题, 如何设计一个类, 最近学了什么
+        // 面向对象设计六大原则： 单一职责原则，开闭原则，历史替换原则，最小知识原则，接口隔离原则，依赖倒置原则。
+        // 最近学习的是算法，再此之前在学python，有写过一个爬虫
+
+        //19.await 和 async 知识点
+        //async/await是C# 5.0推出的异步代码编程模型，其本质是编译为状态机。只要函数前带上async，就会将函数转换为状态机。
+        //从状态机的角度出发，await的本质是调用Task.GetAwaiter()的UnsafeOnCompleted(Action)回调，并指定下一个状态号。从多线程的角度出发，如果await的Task需要在新的线程上执行，
+        //该状态机的MoveNext()方法会立即返回，此时，主线程被释放出来了，然后在UnsafeOnCompleted回调的action指定的线程上下文中继续MoveNext()和下一个状态的代码。而相比之下，
+        //GetResult()就是在当前线程上立即等待Task的完成，在Task完成前，当前线程不会释放。
     }
 }
