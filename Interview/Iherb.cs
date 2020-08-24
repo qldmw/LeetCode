@@ -464,10 +464,55 @@ namespace LeetCode.Interview
         }
 
         //15.Longest increasing subsequence
-        // leetcode 300
+        public int LengthOfLIS(int[] nums)
+        {
+            if (nums == null || nums.Length == 0)
+                return 0;
+
+            //只要有一个数，那么最长子序列就是1
+            int[] dp = Enumerable.Repeat(1, nums.Length).ToArray();
+            // 1. 往前找比当前数字小的数字，如果找到则比较该dp值+1是否大于最大值，大于则赋值
+            for (int i = 0; i < nums.Length; i++)
+            {
+                for (int j = i - 1; j >= 0; j--)
+                {
+                    if (nums[i] > nums[j])
+                        dp[i] = Math.Max(dp[j] + 1, dp[i]);
+                }
+            }
+            return dp.Max();
+        }
 
         //16.Missing integer problem
-        // leetcode 41
+        public int FindMissingInteger(int[] arr)
+        {
+            //测试用例
+            //int[] nums1 = new int[] { 2, 1, 7, 5, 6, 4, 3 };
+            //var res = solution.FindMissingInteger(nums1);
+            //ConsoleX.WriteLine(res);
+
+            bool IsContainOne = false;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] == 1)
+                    IsContainOne = true;
+                if (arr[i] < 1 || arr[i] > arr.Length)
+                    arr[i] = 1;
+            }
+            if (!IsContainOne)
+                return 1;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[Math.Abs(arr[i]) - 1] > 0)
+                    arr[Math.Abs(arr[i]) - 1] *= -1;
+            }
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] > 0)
+                    return i + 1;
+            }
+            return arr.Length + 1;
+        }
 
         //17.字符串相加
         public string AddStrings(string num1, string num2)

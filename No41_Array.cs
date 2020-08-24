@@ -24,6 +24,11 @@ namespace LeetCode_41
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.08.24: 充分负号和下标，在不损失信息的前提下添加新信息。第一个 for 找出是否含有 1，第二个 for 利用在范围内的值来改变下标对应的值（乘以-1），第三个 for 找到没有别标记的值（有负号），得到答案。
+    /// </summary>
+
     public class Solution
     {
         /// <summary>

@@ -28,39 +28,33 @@ namespace LeetCode
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
                 //string input = "abcbefga";
                 //string input2 = "dbefga";
-                int[] nums1 = new int[] { 2, 1, 7, 5, 6, 4, 3 };
-                int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
-                int[] nums3 = new int[] { 10, 15, 20 };
-                var data = new int[][] { nums1, nums2, nums3 };
-                var res = solution.BiggestSubset(data);
+                //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
+                //int[] nums3 = new int[] { 10, 15, 20 };
+                int[] nums1 = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
+                var res = solution.LengthOfLIS(nums1);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public int[] BiggestSubset(int[][] data)
+            public int LengthOfLIS(int[] nums)
             {
-                //测试用例
-                //int[] nums1 = new int[] { 2, 1, 7, 5, 6, 4, 3 };
-                //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
-                //int[] nums3 = new int[] { 10, 15, 20 };
-                //var data = new int[][] { nums1, nums2, nums3 };
-                //var res = solution.BiggestSubset(data);
-                //ConsoleX.WriteLine(res);
+                if (nums == null || nums.Length == 0)
+                    return 0;
 
-                int[] res = null;
-                int max = int.MinValue;
-                for (int i = 0; i < data.Length; i++)
+                //又要有一个数，那么最长子序列也最小是1
+                int[] dp = Enumerable.Repeat(1, nums.Length).ToArray();
+                // 1. 往前找比当前数字小的数字，如果找到则比较该dp值+1是否大于最大值，大于则赋值
+                for (int i = 0; i < nums.Length; i++)
                 {
-                    int sum = data[i].Sum();
-                    if (sum > max)
+                    for (int j = i - 1; j >= 0; j--)
                     {
-                        max = sum;
-                        res = data[i];
+                        if (nums[i] > nums[j])
+                            dp[i] = Math.Max(dp[j] + 1, dp[i]);
                     }
                 }
-                return res;
+                return dp.Max();
             }
         }
     }
