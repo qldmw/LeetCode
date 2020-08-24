@@ -27,6 +27,11 @@ namespace LeetCode_215
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.08.22: 三数取中后记得要排除掉标记点外的数，就是right--；这里的是第K大，要是取第几个，就要把 k 减一，抵消掉长度转位置的偏移量。
+    /// </summary>
+
     public class Solution
     {
         /// <summary>

@@ -185,8 +185,92 @@ namespace LeetCode.Interview
         }
 
         //6.查找中位数
+        public int FindMedian(int[] nums)
+        {
+            ////测试用例
+            //var res = solution.FindMedian(new int[] { 5, 2, 4, 1, 3 });
+            //ConsoleX.WriteLine(res);
+
+            int arrLen = nums.Length;
+            if (arrLen % 2 == 0)
+                return QuickSelect(nums, 0, arrLen - 1, arrLen / 2);
+            else
+                return QuickSelect(nums, 0, arrLen - 1, arrLen / 2 + 1);
+        }
+
+        private int QuickSelect(int[] nums, int left, int right, int k)
+        {
+            int pivot = Partition(nums, left, right);
+            //长度对应到数组时，需要 -1 对应
+            if (pivot == k - 1)
+                return nums[pivot];
+            if (pivot > k - 1)
+                return QuickSelect(nums, left, pivot - 1, k);
+            else
+                return QuickSelect(nums, pivot + 1, right, k);
+        }
+
+        private int Partition(int[] nums, int left, int right)
+        {
+            if (left >= right)
+                return left;
+            //三数取中，避免出现传统方法会遇到的极端情况（已排序），沦为冒泡
+            MedianOfThree(nums, left, right);
+            //以右边第二位作为枢纽
+            int pivot = right - 1;
+            //排除掉最右边的数
+            right--;
+            while (left < right)
+            {
+                while (left < right && nums[left] <= nums[pivot])
+                    left++;
+                while (left < right && nums[right] >= nums[pivot])
+                    right--;
+                Swap(nums, left, right);
+            }
+            Swap(nums, left, pivot);
+            return left;
+        }
+
+        private void MedianOfThree(int[] nums, int left, int right)
+        {
+            int mid = (left + right) / 2;
+            //交换三个数，先用左边比较两次，确保左边最小，然后再把中间和右边一比，齐活
+            if (nums[left] > nums[mid])
+                Swap(nums, left, mid);
+            if (nums[left] > nums[right])
+                Swap(nums, left, right);
+            if (nums[mid] > nums[right])
+                Swap(nums, mid, right);
+            //把中位数放到右边第二位，为之后备用
+            Swap(nums, mid, right - 1);
+        }
+
+        private void Swap(int[] nums, int a, int b)
+        {
+            int temp = nums[a];
+            nums[a] = nums[b];
+            nums[b] = temp;
+        }
 
         //7.查找不重复字符串
+        public int LengthOfLongestSubstring(string s)
+        {
+            int maxLen = 0;
+            int left = 0;
+            //char 是字符，int 是字符出现的最后位置
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (dic.ContainsKey(s[i]))
+                {
+                    left = Math.Max(dic[s[i]] + 1, left);// 为了不让left往回走，参考该用例：abba
+                }
+                dic[s[i]] = i;
+                maxLen = Math.Max(i - left + 1, maxLen);
+            }
+            return maxLen;
+        }
 
         //8.找两个字符串中相同字符串的最大长度
 
@@ -220,6 +304,10 @@ namespace LeetCode.Interview
         // 其他博弈论： 海盗分赃，旅行者困境
 
         //12.给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url?
+        // 分治法（divide and conquer)
+        // Step1：遍历文件a，对每个url求取hash(url)%1000，然后根据所取得的值将url分别存储到1000个小文件(记为a0,a1,...,a999，每个小文件约300M);
+        // Step2:遍历文件b，采取和a相同的方式将url分别存储到1000个小文件(记为b0,b1,...,b999);
+        // Step3：求每对小文件ai和bi中相同的url时，可以把ai的url存储到hash_set/hash_map中。然后遍历bi的每个url，看其是否在刚才构建的hash_set中，如果是，那么就是共同的url，存到文件里面就可以了。
 
         //13.最长字符串子集
 
