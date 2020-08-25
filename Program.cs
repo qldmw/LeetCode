@@ -30,31 +30,31 @@ namespace LeetCode
                 //string input2 = "dbefga";
                 //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
                 //int[] nums3 = new int[] { 10, 15, 20 };
-                int[] nums1 = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
-                var res = solution.LengthOfLIS(nums1);
+                //int[] nums1 = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
+                var res = solution.AddStrings("111111111111111111111111111111111","222222222222222222222222222222222222222");
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public int LengthOfLIS(int[] nums)
+            public string AddStrings(string num1, string num2)
             {
-                if (nums == null || nums.Length == 0)
-                    return 0;
-
-                //又要有一个数，那么最长子序列也最小是1
-                int[] dp = Enumerable.Repeat(1, nums.Length).ToArray();
-                // 1. 往前找比当前数字小的数字，如果找到则比较该dp值+1是否大于最大值，大于则赋值
-                for (int i = 0; i < nums.Length; i++)
+                int len1 = num1.Length;
+                int len2 = num2.Length;
+                int loop = Math.Max(len1, len2);
+                char[] res = new char[loop];
+                int carry = 0;
+                for (int i = 0; i < loop; i++)
                 {
-                    for (int j = i - 1; j >= 0; j--)
-                    {
-                        if (nums[i] > nums[j])
-                            dp[i] = Math.Max(dp[j] + 1, dp[i]);
-                    }
+                    int digit1 = len1 - 1 - i < 0 ? 0 : num1[len1 - 1 - i] - '0';
+                    int digit2 = len2 - 1 - i < 0 ? 0 : num2[len2 - 1 - i] - '0';
+                    int num = digit1 + digit2 + carry;
+
+                    carry = num / 10;
+                    res[loop - 1 - i] = (char)(num % 10 + '0');
                 }
-                return dp.Max();
+                return carry == 0 ? new string(res) : "1" + new string(res);
             }
         }
     }
