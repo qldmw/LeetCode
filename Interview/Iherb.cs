@@ -548,5 +548,13 @@ namespace LeetCode.Interview
         //从状态机的角度出发，await的本质是调用Task.GetAwaiter()的UnsafeOnCompleted(Action)回调，并指定下一个状态号。从多线程的角度出发，如果await的Task需要在新的线程上执行，
         //该状态机的MoveNext()方法会立即返回，此时，主线程被释放出来了，然后在UnsafeOnCompleted回调的action指定的线程上下文中继续MoveNext()和下一个状态的代码。而相比之下，
         //GetResult()就是在当前线程上立即等待Task的完成，在Task完成前，当前线程不会释放。
+
+        //20.怎么解决超卖问题
+        //悲观锁，分布式锁，乐观锁，队列串行化，Redis原子操作
+
+        //21.索引的数据结构,描述下这个数据结构的特性
+        //B+树或B-树
+
+        //22.dictionary的数据结构，add操作背后是怎么实现的
     }
 }
