@@ -17,7 +17,7 @@ namespace LeetCode
             {
                 //int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
-                //string input = Console.ReadLine();
+                string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
@@ -31,80 +31,36 @@ namespace LeetCode
                 //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
                 //int[] nums3 = new int[] { 10, 15, 20 };
                 //int[] nums1 = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
-                IList<IList<string>> data = new List<IList<string>>()
-                {
-                    //new List<string>(){ "JFK","SFO" },
-                    //new List<string>(){ "JFK","ATL" },
-                    //new List<string>(){ "SFO","ATL" },
-                    //new List<string>(){ "ATL","JFK" },
-                    //new List<string>(){ "ATL","SFO" }
-
-                    new List<string>(){ "MUC", "LHR" },
-                    new List<string>(){ "JFK", "MUC" },
-                    new List<string>(){ "SFO", "SJC" },
-                    new List<string>(){ "LHR", "SFO" }
-                };
-                var res = solution.FindItinerary(data);
+                var res = solution.ReverseWords(input);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public IList<string> FindItinerary(IList<IList<string>> tickets)
+            public string ReverseWords(string s)
             {
-                IList<string> res = new List<string>();
-                //出发地字典，string是出发点名
-                Dictionary<string, GraphNode<string>> dic = new Dictionary<string, GraphNode<string>>();
-                //把旅程图构建好
-                foreach (var ticket in tickets)
+                StringBuilder sb = new StringBuilder();
+                int left = 0;
+                for (int right = 0; right < s.Length; right++)
                 {
-                    GraphNode<string> to = dic.Keys.Contains(ticket[1]) ? dic[ticket[1]] : new GraphNode<string>(ticket[1]);
-                    GraphNode<string> from = dic.Keys.Contains(ticket[0]) ? dic[ticket[0]] : new GraphNode<string>(ticket[0]);
-                    from.Targets.Add(to);
-                    dic.TryAdd(ticket[0], from);
-                    dic.TryAdd(ticket[1], to);
-                }
-                //对目的地排序排序
-                foreach (var node in dic.Values)
-                {
-                    node.Targets.Sort();
-                }
-                //获取出发点
-                var start = dic["JFK"];
-                if (start == null)
-                    return res;
-
-                while (start != null)
-                {
-                    res.Add(start.Value);
-                    GraphNode<string> next = null;
-                    //如果还有下个节点
-                    if (start.Targets.Count != 0)
+                    if (s[right] == ' ')
                     {
-                        next = start.Targets[0];
-                        start.Targets.RemoveAt(0);
+                        sb.Append(' ');
+                        left = right + 1;
                     }
-                    start = next;
+                    else if ((right + 1 < s.Length && s[right + 1] == ' ') || right == s.Length - 1)
+                        ReverseAndAppend(sb, s, left, right);                    
                 }
-                return res;
+                return sb.ToString();
             }
 
-            private class GraphNode<T> : IComparable<GraphNode<T>>
+            private void ReverseAndAppend(StringBuilder sb, string s, int left, int right)
             {
-                public GraphNode(T val)
+                while (left <= right)
                 {
-                    this.Value = val;
-                    this.Targets = new List<GraphNode<T>>();
-                }
-
-                public T Value { get; set; }
-
-                public List<GraphNode<T>> Targets { get; set; }
-
-                public int CompareTo(GraphNode<T> obj)
-                {
-                    return string.Compare(Value.ToString(), obj.Value.ToString());
+                    sb.Append(s[right]);
+                    right--;
                 }
             }
         }
