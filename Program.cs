@@ -33,58 +33,58 @@ namespace LeetCode
                 //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
                 //int[] nums3 = new int[] { 10, 15, 20 };
                 //int[] nums1 = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
-                var res = solution.TaskSample();
-                //ConsoleX.WriteLine(res);
+                IList<IList<int>> data = new List<IList<int>>()
+                {
+                    new List<int>() { 1, 3 },
+                    new List<int>() { 3, 0, 1 },
+                    new List<int>() { 2 },
+                    new List<int>() { 0 }
+
+                    //new List<int>() { 1 },
+                    //new List<int>() { 2 },
+                    //new List<int>() { 3 },
+                    //new List<int>() {  }
+                };
+                var res = solution.CanVisitAllRooms(data);
+                ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            private static int _count = 0;
-            private static readonly object locker = new object();
-            private static SpinLock spinLock = new SpinLock();
-
-            private static void print()
+            /// <summary>
+            /// 深度优先
+            /// 设 key 总数为 n, room 总数为 m
+            /// 时间复杂度：O(n)，最差情况下在最后一个才找到答案
+            /// 空间复杂度：O(m), 记录房间是否锁上的 hashSet 是 m 个， 递归深度最大也是 m 次
+            /// </summary>
+            /// <param name="rooms"></param>
+            /// <returns></returns>
+            public bool CanVisitAllRooms(IList<IList<int>> rooms)
             {
-                //mutex
-                //https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.mutex?view=netcore-3.1
-
-                //monitor
-                //https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.monitor?view=netcore-3.1
-
-                //自旋锁
-                //https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.spinlock?view=netcore-3.1
-                //值类型的轻量级锁，在锁的粒度较大且数量较大时(例如，链接列表中的每个节点的锁) 或锁保持时间始终极短时，自旋锁可能非常有利。
-                //自旋锁会不断竞争，不像lock在竞争到一定次数后会休眠，所以不适用于长期占有锁的场景。
-                bool locked = false;
-                try
+                HashSet<int> lockedRooms = new HashSet<int>();
+                for (int i = 1; i < rooms.Count; i++)
                 {
-                    spinLock.Enter(ref locked);
-                    Console.WriteLine(_count++);
+                    lockedRooms.Add(i);
                 }
-                finally
+                Recurse(0);
+                return lockedRooms.Count == 0;
+
+                void Recurse(int roomNo)
                 {
-                    //证明锁的有效性
-                    //if (_count % 2 == 0)
-                    //    Thread.Sleep(30000);
-                    if (locked)
-                        spinLock.Exit();
+                    if (lockedRooms.Count == 0)
+                        return;
+
+                    var keys = rooms[roomNo];
+                    foreach (int key in keys)
+                    {
+                        if (lockedRooms.Contains(key))
+                        {
+                            lockedRooms.Remove(key);
+                            Recurse(key);
+                        }
+                    }
                 }
-
-                //标准锁
-                //lock (locker)
-                //{
-                //    Console.WriteLine(_count++);
-                //}
-            }
-            public bool TaskSample()
-            {
-                Task t1 = new Task(() => { print(); });
-                Task t2 = new Task(() => { print(); });
-                t1.Start();
-                t2.Start();
-
-                return true;
             }
         }
     }
