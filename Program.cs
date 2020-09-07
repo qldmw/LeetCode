@@ -55,6 +55,8 @@ namespace LeetCode
         {
             /// <summary>
             /// 深度优先
+            /// 时间复杂度：O(4ⁿ/Sqrt(n))，官方题解推导出的是卡特兰数的时间复杂度，这个我真不知道怎么算的，我只有个大概范围的概念
+            /// 空间复杂度：O(n),最大深度 2n,因为括号是左右两个
             /// </summary>
             /// <param name="n"></param>
             /// <returns></returns>
