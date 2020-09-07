@@ -19,6 +19,7 @@ namespace LeetCode
             {
                 int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
+                //int input3 = int.Parse(Console.ReadLine());
                 //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
