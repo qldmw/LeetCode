@@ -21,6 +21,11 @@ namespace LeetCode_169
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.09.07: boyer-moore投票算法简述：遇到相同的count++，遇到不同的count--，遍历完最后剩下的就是那个过半的数。
+    /// </summary>
+    
     public class Solution
     {
         /// <summary>

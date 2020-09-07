@@ -17,7 +17,7 @@ namespace LeetCode
             var solution = new Solution();
             while (true)
             {
-                //int input = int.Parse(Console.ReadLine());
+                int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
                 //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
@@ -32,20 +32,20 @@ namespace LeetCode
                 //string input2 = "dbefga";
                 //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
                 //int[] nums3 = new int[] { 10, 15, 20 };
-                //int[] nums1 = new int[] { 10, 9, 2, 5, 3, 7, 101, 18 };
-                IList<IList<int>> data = new List<IList<int>>()
-                {
-                    new List<int>() { 1, 3 },
-                    new List<int>() { 3, 0, 1 },
-                    new List<int>() { 2 },
-                    new List<int>() { 0 }
+                //int[] nums1 = new int[] { 1, 1, 1, 2, 2, 3 };
+                //IList<IList<int>> data = new List<IList<int>>()
+                //{
+                //    new List<int>() { 1, 3 },
+                //    new List<int>() { 3, 0, 1 },
+                //    new List<int>() { 2 },
+                //    new List<int>() { 0 }
 
-                    //new List<int>() { 1 },
-                    //new List<int>() { 2 },
-                    //new List<int>() { 3 },
-                    //new List<int>() {  }
-                };
-                var res = solution.CanVisitAllRooms(data);
+                //    //new List<int>() { 1 },
+                //    //new List<int>() { 2 },
+                //    //new List<int>() { 3 },
+                //    //new List<int>() {  }
+                //};
+                var res = solution.GenerateParenthesis(input);
                 ConsoleX.WriteLine(res);
             }
         }
@@ -54,36 +54,33 @@ namespace LeetCode
         {
             /// <summary>
             /// 深度优先
-            /// 设 key 总数为 n, room 总数为 m
-            /// 时间复杂度：O(n)，最差情况下在最后一个才找到答案
-            /// 空间复杂度：O(m), 记录房间是否锁上的 hashSet 是 m 个， 递归深度最大也是 m 次
             /// </summary>
-            /// <param name="rooms"></param>
+            /// <param name="n"></param>
             /// <returns></returns>
-            public bool CanVisitAllRooms(IList<IList<int>> rooms)
+            public IList<string> GenerateParenthesis(int n)
             {
-                HashSet<int> lockedRooms = new HashSet<int>();
-                for (int i = 1; i < rooms.Count; i++)
-                {
-                    lockedRooms.Add(i);
-                }
-                Recurse(0);
-                return lockedRooms.Count == 0;
+                if (n <= 0)
+                    return new List<string>();
 
-                void Recurse(int roomNo)
+                IList<string> res = new List<string>();
+                //左括号当前总数，左括号（Left Parenthesis）
+                int leftParenthesisCount = 0;
+                //左括号剩余个数
+                int leftLeftCount = n;
+                //右括号剩余个数
+                int rightLeftCount = n;
+                Recurse(leftLeftCount, rightLeftCount, leftParenthesisCount, string.Empty);
+                return res;
+
+                void Recurse(int llc, int rlc, int lpc, string s)
                 {
-                    if (lockedRooms.Count == 0)
+                    //如果左右括号计数小于0，或者右括号多于左括号，则为不合法，直接返回
+                    if (llc < 0 || rlc < 0 ||lpc < 0)
                         return;
-
-                    var keys = rooms[roomNo];
-                    foreach (int key in keys)
-                    {
-                        if (lockedRooms.Contains(key))
-                        {
-                            lockedRooms.Remove(key);
-                            Recurse(key);
-                        }
-                    }
+                    if (llc == 0 && rlc == 0)
+                        res.Add(s);
+                    Recurse(llc - 1, rlc, lpc + 1, s + "(");
+                    Recurse(llc, rlc - 1, lpc - 1, s + ")");
                 }
             }
         }
