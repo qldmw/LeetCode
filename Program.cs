@@ -17,7 +17,7 @@ namespace LeetCode
             var solution = new Solution();
             while (true)
             {
-                int input = int.Parse(Console.ReadLine());
+                //int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
                 //int input3 = int.Parse(Console.ReadLine());
                 //string input = Console.ReadLine();
@@ -33,7 +33,7 @@ namespace LeetCode
                 //string input2 = "dbefga";
                 //int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
                 //int[] nums3 = new int[] { 10, 15, 20 };
-                //int[] nums1 = new int[] { 1, 1, 1, 2, 2, 3 };
+                int[] nums1 = new int[] { 5, 1, 2, 3, 4 };
                 //IList<IList<int>> data = new List<IList<int>>()
                 //{
                 //    new List<int>() { 1, 3 },
@@ -46,44 +46,42 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                var res = solution.GenerateParenthesis(input);
+                var res = solution.Search(nums1, 1);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 深度优先
-            /// 时间复杂度：O(4ⁿ/Sqrt(n))，官方题解推导出的是卡特兰数的时间复杂度，这个我真不知道怎么算的，我只有个大概范围的概念
-            /// 空间复杂度：O(n),最大深度 2n,因为括号是左右两个
-            /// </summary>
-            /// <param name="n"></param>
-            /// <returns></returns>
-            public IList<string> GenerateParenthesis(int n)
+            public int Search(int[] nums, int target)
             {
-                if (n <= 0)
-                    return new List<string>();
+                return BackTracking(0, nums.Length - 1);
 
-                IList<string> res = new List<string>();
-                //左括号当前总数，左括号（Left Parenthesis）
-                int leftParenthesisCount = 0;
-                //左括号剩余个数
-                int leftLeftCount = n;
-                //右括号剩余个数
-                int rightLeftCount = n;
-                Recurse(leftLeftCount, rightLeftCount, leftParenthesisCount, string.Empty);
-                return res;
-
-                void Recurse(int llc, int rlc, int lpc, string s)
+                int BackTracking(int left, int right)
                 {
-                    //如果左右括号计数小于0，或者右括号多于左括号，则为不合法，直接返回
-                    if (llc < 0 || rlc < 0 ||lpc < 0)
-                        return;
-                    if (llc == 0 && rlc == 0)
-                        res.Add(s);
-                    Recurse(llc - 1, rlc, lpc + 1, s + "(");
-                    Recurse(llc, rlc - 1, lpc - 1, s + ")");
+                    //找完了都没有就返回
+                    if (left > right)
+                        return -1;
+                    int pivot = (left + right) / 2;
+                    //如果枢纽就是target，就直接答案
+                    if (nums[pivot] == target)
+                        return pivot;
+                    
+                    //如果左边是升序的，且target被包裹其中，就往左边查。否则往右边查
+                    if (pivot - 1 >= 0 && nums[left] <= nums[pivot - 1])
+                    {
+                        if (target >= nums[left] && target <= nums[pivot - 1])
+                            return BackTracking(left, pivot - 1);
+                        else
+                            return BackTracking(pivot + 1, right);
+                    }
+                    else
+                    {
+                        if (pivot + 1 < nums.Length && target >= nums[pivot + 1] && target <= nums[right])
+                            return BackTracking(pivot + 1, right);
+                        else
+                            return BackTracking(left, pivot - 1);
+                    }
                 }
             }
         }

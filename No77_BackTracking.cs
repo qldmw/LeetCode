@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace LeetCode_22
+namespace LeetCode_77
 {
     //static void Main(string[] args)
     //{
@@ -10,7 +11,7 @@ namespace LeetCode_22
     //    while (true)
     //    {
     //        int input = int.Parse(Console.ReadLine());
-    //        //int input2 = int.Parse(Console.ReadLine());
+    //        int input2 = int.Parse(Console.ReadLine());
     //        //int input3 = int.Parse(Console.ReadLine());
     //        //string input = Console.ReadLine();
     //        //string input2 = Console.ReadLine();
@@ -38,7 +39,7 @@ namespace LeetCode_22
     //        //    //new List<int>() { 3 },
     //        //    //new List<int>() {  }
     //        //};
-    //        var res = solution.GenerateParenthesis(input);
+    //        var res = solution.Combine(input, input2);
     //        ConsoleX.WriteLine(res);
     //    }
     //}
@@ -46,36 +47,35 @@ namespace LeetCode_22
     public class Solution
     {
         /// <summary>
-        /// 回溯法（这个和深度优先感觉很像，leetcode的说明里有一个说的很好：“回溯算法的基本思想是：从一条路往前走，能进则进，不能进则退回来，换一条路再试。”）
-        /// 时间复杂度：O(4ⁿ/Sqrt(n))，官方题解推导出的是卡特兰数的时间复杂度，这个我真不知道怎么算的，我只有个大概范围的概念
-        /// 空间复杂度：O(n),最大深度 2n,因为括号是左右两个
+        /// 回溯法，辅以适当减枝。回溯算法的基本思想是：从一条路往前走，能进则进，不能进则退回来，换一条路再试。
+        /// 时间复杂度：O(C k n),标准的组合
+        /// 空间复杂度：O(k),递归深度最多为k
         /// </summary>
         /// <param name="n"></param>
+        /// <param name="k"></param>
         /// <returns></returns>
-        public IList<string> GenerateParenthesis(int n)
+        public IList<IList<int>> Combine(int n, int k)
         {
-            if (n <= 0)
-                return new List<string>();
-
-            IList<string> res = new List<string>();
-            //左括号当前总数，左括号（Left Parenthesis）
-            int leftParenthesisCount = 0;
-            //左括号剩余个数
-            int leftLeftCount = n;
-            //右括号剩余个数
-            int rightLeftCount = n;
-            Recurse(leftLeftCount, rightLeftCount, leftParenthesisCount, string.Empty);
+            IList<IList<int>> res = new List<IList<int>>();
+            BackTracking(new List<int>(), 0);
             return res;
 
-            void Recurse(int llc, int rlc, int lpc, string s)
+            void BackTracking(List<int> trace, int last)
             {
-                //如果左右括号计数小于0，或者右括号多于左括号，则为不合法，直接返回
-                if (llc < 0 || rlc < 0 || lpc < 0)
+                //如果剩下的数字不足以完成组合，就直接返回
+                if (n - last < k - trace.Count)
                     return;
-                if (llc == 0 && rlc == 0)
-                    res.Add(s);
-                Recurse(llc - 1, rlc, lpc + 1, s + "(");
-                Recurse(llc, rlc - 1, lpc - 1, s + ")");
+                if (trace.Count == k)
+                {
+                    res.Add(trace);
+                    return;
+                }
+                for (int i = last + 1; i <= n; i++)
+                {
+                    var temp = trace.ToList();
+                    temp.Add(i);
+                    BackTracking(temp, i);
+                }
             }
         }
     }
