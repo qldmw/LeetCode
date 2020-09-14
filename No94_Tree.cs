@@ -39,6 +39,11 @@ namespace LeetCode_94
     /// (2)线索子树不能共用。
     /// </summary>
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.09.14: 每日一题，实现了 递归 和 迭代法，递归还是能很容易写出来，迭代还是要纸上推一下，加上记忆才能写好。
+    /// </summary>
+
     public class Solution
     {
         /// <summary>
