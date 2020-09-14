@@ -24,9 +24,9 @@ namespace LeetCode
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
-                //var builder = new DataStructureBuilder();
-                //int?[] data = new int?[] { 1, 2, 3, 4, 5, null, 6, null, null, 7, 8 };
-                //var tree = builder.BuildTree(data);
+                var builder = new DataStructureBuilder();
+                int?[] data = new int?[] { 1, 2, 3, 4, 5, null, 6, null, null, 7, 8 };
+                var tree = builder.BuildTree(data);
                 //var listNode = builder.BuildListNode(new int[] { 1, 4, 5 });
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
                 //string input = "abcbefga";
@@ -46,14 +46,31 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                var res = solution.CombinationSum3(3, 9);
+                var res = solution.InorderTraversal(tree);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            
+            public IList<int> InorderTraversal(TreeNode root)
+            {
+                IList<int> res = new List<int>();
+                Stack<TreeNode> stack = new Stack<TreeNode>();
+                TreeNode cur = root;
+                while (cur != null || stack.Count != 0)
+                {
+                    while (cur != null)
+                    {
+                        stack.Push(cur);
+                        cur = cur.left;
+                    }
+                    var temp = stack.Pop();
+                    res.Add(temp.val);
+                    cur = temp.right;
+                }
+                return res;
+            }
         }
     }
 }
