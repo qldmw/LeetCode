@@ -55,7 +55,11 @@ namespace LeetCode
         {
             public int MinimumOperations(string leaves)
             {
-
+                int[,] dp = new int[3, leaves.Length];
+                for (int i = 0; i < leaves.Length; i++)
+                {
+                    if (i > )
+                }
             }
         }
     }
