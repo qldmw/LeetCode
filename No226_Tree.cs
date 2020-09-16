@@ -27,6 +27,11 @@ namespace LeetCode_226
     //    }
     //}
 
+    /// <summary>
+    /// REVIEW
+    /// 2020.09.16: 每日一题，这道题反复鞭尸，翻转二叉树的梗看来是跳不过去了。
+    /// </summary>
+
     public class Solution
     {
         /// <summary>
@@ -39,11 +44,11 @@ namespace LeetCode_226
             if (root == null)
                 return null;
 
-            var res = new TreeNode(root.val);
-            res.right = InvertTree(root.left);
-            res.left = InvertTree(root.right);
+            var temp = InvertTree(root.left);
+            root.left = InvertTree(root.right);
+            root.right = temp;
 
-            return res;
+            return root;
         }
 
         /// <summary>
