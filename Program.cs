@@ -56,7 +56,6 @@ namespace LeetCode
         /// </summary>
         public class Foo
         {
-
             public Foo()
             {
 
