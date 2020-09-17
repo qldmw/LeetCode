@@ -20,7 +20,7 @@ namespace LeetCode
                 //int input = int.Parse(Console.ReadLine());
                 //int input2 = int.Parse(Console.ReadLine());
                 //int input3 = int.Parse(Console.ReadLine());
-                string input = Console.ReadLine();
+                //string input = Console.ReadLine();
                 //string input2 = Console.ReadLine();
                 //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
                 //int input2 = int.Parse(Console.ReadLine());
@@ -46,85 +46,48 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                var res = solution.MinimumOperations(input);
-                ConsoleX.WriteLine(res);
+                //var res = solution.MinimumOperations(input);
+                //ConsoleX.WriteLine(res);
             }
         }
 
-        public class Solution
+        /// <summary>
+        /// 检查唯一变量，线程休眠
+        /// </summary>
+        public class Foo
         {
-            /// <summary>
-            /// 动态规划优化，压缩的状态空间。复习的时候最好还是用没有优化空间的版本，那个版本思路更容易理解，更清晰
-            /// 时间复杂度：O(n)
-            /// 空间复杂度：O(1)，压缩状态到了一个只需要 3 个长度的数组
-            /// </summary>
-            /// <param name="leaves"></param>
-            /// <returns></returns>
-            public int MinimumOperations(string leaves)
+
+            public Foo()
             {
-                //压缩多维dp，因为只需要使用前一个状态
-                int[] dp = new int[3];
-                for (int i = 0; i < leaves.Length; i++)
-                {
-                    int pre0 = dp[0];
-                    int pre1 = dp[1];
-                    int pre2 = dp[2];
 
-                    //维护第一维，如果为 y，就要花一步把这个 y 变为 r
-                    if (i == 0)
-                        dp[0] = leaves[0] == 'r' ? 0 : 1;
-                    else
-                        dp[0] = pre0 + (leaves[i] == 'r' ?  0 : 1);
-
-                    //维护第二维，要从第二个才开始
-                    if (i > 0)
-                        if (i == 1)
-                            dp[1] = pre0 + (leaves[i] == 'y' ? 0 : 1);
-                        else
-                            dp[1] = Math.Min(pre1, pre0) + (leaves[i] == 'y' ? 0 : 1);
-                            
-                    //维护第三维，要从第三个才开始
-                    if (i > 1)
-                        if (i == 2)
-                            dp[2] = pre1 + (leaves[i] == 'r' ? 0 : 1);
-                        else
-                            dp[2] = Math.Min(pre2, pre1) + (leaves[i] == 'r' ? 0 : 1);
-                }
-                return dp[2];
             }
 
-            ///// <summary>
-            ///// 多维动态规划，目前做一维简单的动态规划还可以，一复杂点就开始摸不清了 o(╥﹏╥)o
-            ///// 时间复杂度：O(n)
-            ///// 空间复杂度：O(n),具体来说是 3n
-            ///// </summary>
-            ///// <param name="leaves"></param>
-            ///// <returns></returns>
-            //public int MinimumOperations(string leaves)
-            //{
-            //    //多维dp，dp[0,]表示全部为 r 的状态，dp[1,]表示全部为 ry 的状态，dp[2,]表示全部为 ryr 的状态。
-            //    int[,] dp = new int[3, leaves.Length];
-            //    //针对二三维的边界，提前填充数据
-            //    dp[1, 0] = dp[2, 0] = dp[2, 1] = int.MaxValue;
-            //    for (int i = 0; i < leaves.Length; i++)
-            //    {
-            //        //维护第一维，如果为 y，就要花一步把这个 y 变为 r
-            //        if (i == 0)
-            //            dp[0, i] = leaves[i] == 'r' ? 0 : 1;
-            //        else
-            //            dp[0, i] = leaves[i] == 'r' ? dp[0, i - 1] : dp[0, i - 1] + 1;
+            //Unsolved Question:这里加了static就不能保证顺序输出了，不知道怎么回事，应该是一样的啊，不确定是不是OJ运行环境的问题。
+            //private static int _signal = 0;
+            private int _signal = 0;
+            public void First(Action printFirst)
+            {
+                // printFirst() outputs "first". Do not change or remove this line.
+                printFirst();
+                _signal = 1;
+            }
 
-            //        //维护第二维，要从第二个才开始
-            //        if (i > 0)
-            //            dp[1, i] = Math.Min(dp[1, i - 1], dp[0, i - 1]) + (leaves[i] == 'y' ? 0 : 1);
+            public void Second(Action printSecond)
+            {
+                while (_signal != 1)
+                    Thread.Sleep(1);
+                // printSecond() outputs "second". Do not change or remove this line.
+                printSecond();
+                _signal = 2;
+            }
 
-            //        //维护第三维，要从第三个才开始
-            //        if (i > 1)
-            //            dp[2, i] = Math.Min(dp[2, i - 1], dp[1, i - 1]) + (leaves[i] == 'r' ? 0 : 1);
-
-            //    }
-            //    return dp[2, leaves.Length - 1];
-            //}
+            public void Third(Action printThird)
+            {
+                while (_signal != 2)
+                    Thread.Sleep(1);
+                // printThird() outputs "third". Do not change or remove this line.
+                printThird();
+            }
         }
     }
 }
