@@ -51,5 +51,43 @@ namespace LeetCode
             }
         }
 
+        public class FooBar
+        {
+            private int n;
+            private SpinWait _spinWait = new SpinWait();
+            private int _signal = 0;
+
+            public FooBar(int n)
+            {
+                this.n = n;
+            }
+
+            public void Foo(Action printFoo)
+            {
+
+                for (int i = 0; i < n; i++)
+                {
+                    while (_signal != 0)
+                        _spinWait.SpinOnce();
+                    
+                    // printFoo() outputs "foo". Do not change or remove this line.
+                    printFoo();
+                    _signal = 1;
+                }
+            }
+
+            public void Bar(Action printBar)
+            {
+
+                for (int i = 0; i < n; i++)
+                {
+                    while (_signal != 1)
+                        _spinWait.SpinOnce();
+                    // printBar() outputs "bar". Do not change or remove this line.
+                    printBar();
+                    _signal = 0;
+                }
+            }
+        }
     }
 }
