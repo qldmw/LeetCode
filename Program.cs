@@ -51,41 +51,67 @@ namespace LeetCode
             }
         }
 
-        public class FooBar
+        /// <summary>
+        /// 使用 SpinWait 解决，因为只是打印数字，所以用锁其实是一种浪费。（不过还是应该尝试用锁，毕竟是为了学习）
+        /// </summary>
+        public class ZeroEvenOdd
         {
             private int n;
+            //0 表示已经做过 zero 的打印了
+            //1 表示已经做过 odd 的打印了
+            //2 表示已经做过在 odd 之后的 zero 的打印了
+            //3 表示已经做过 even 的打印了
+            //初始的时候期望以零开始，所以是 3。
+            private int _signal = 3;
+            private int _count = 0;
             private SpinWait _spinWait = new SpinWait();
-            private int _signal = 0;
 
-            public FooBar(int n)
+            public ZeroEvenOdd(int n)
             {
                 this.n = n;
             }
 
-            public void Foo(Action printFoo)
+            // printNumber(x) outputs "x", where x is an integer.
+            public void Zero(Action<int> printNumber)
             {
-
-                for (int i = 0; i < n; i++)
+                while (_count < n)
                 {
-                    while (_signal != 0)
+                    while (!(_signal == 1 || _signal == 3))
+                    {
                         _spinWait.SpinOnce();
-                    
-                    // printFoo() outputs "foo". Do not change or remove this line.
-                    printFoo();
-                    _signal = 1;
+                        if (_count >= n) return;
+                    }
+                    printNumber(0);
+                    _signal = (_signal + 1) % 4;
                 }
             }
 
-            public void Bar(Action printBar)
+            public void Even(Action<int> printNumber)
             {
-
-                for (int i = 0; i < n; i++)
+                while (_count < n)
                 {
-                    while (_signal != 1)
+                    while (_signal != 2)
+                    {
                         _spinWait.SpinOnce();
-                    // printBar() outputs "bar". Do not change or remove this line.
-                    printBar();
-                    _signal = 0;
+                        if (_count >= n) return;
+                    }
+                    printNumber(++_count);
+                    _signal = (_signal + 1) % 4;
+                }
+            }
+
+            public void Odd(Action<int> printNumber)
+            {
+                while (_count < n)
+                {
+                    if (_count >= n) return;
+                    while (_signal != 0)
+                    {
+                        _spinWait.SpinOnce();
+                        if (_count >= n) return;
+                    }
+                    printNumber(++_count);
+                    _signal = (_signal + 1) % 4;
                 }
             }
         }
