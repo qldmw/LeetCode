@@ -8,6 +8,7 @@ namespace LeetCode.DataStructure
     {
         ///Unsolved Question:
         ///1.List是连续的内存空间，删除中间的元素之后应该会发生内存移动才对，但是显然不可能这么做，因为性能消耗太大，不值得，好奇List是通过什么方法完成的。
+        ///2.看源码的时候看到一个 _version，估计是一个什么更新版本之类的东西，之后仔细研究下是什么用。
 
         ///源码地址：https://source.dot.net/#System.Private.CoreLib/List.cs
         ///1.看了源码中的 Remove 方法，然而并没有什么黑科技，即使简单调用了 Array.CoreCLR.cs 中的 Copy 方法，这个方法的 unsafe 的，
