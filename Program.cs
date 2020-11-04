@@ -31,7 +31,10 @@ namespace LeetCode
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
                 //string input = "abcbefga";
                 //string input2 = "dbefga";
+                //int[] nums = new int[] { 5, 7, 7, 8, 8, 10 };
+                //int num = 8;
                 int[] nums = new int[] { 5, 7, 7, 8, 8, 10 };
+                int num = 6;
                 //int[] nums1 = new int[] { 10, 1, 2, 7, 6, 1, 5 };
                 //IList<IList<int>> data = new List<IList<int>>()
                 //{
@@ -45,13 +48,21 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                var res = solution.SearchRange(nums, 8);
+                var res = solution.SearchRange(nums, num);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
+            /// <summary>
+            /// 二分法
+            /// 时间复杂度：O(logn)
+            /// 空间复杂度：O(1)，虽然使用了递归，但是只会有一层，不会保存状态，只有一个栈空间
+            /// </summary>
+            /// <param name="nums"></param>
+            /// <param name="target"></param>
+            /// <returns></returns>
             public int[] SearchRange(int[] nums, int target)
             {
                 var res = new int[2] { -1, -1 };
