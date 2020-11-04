@@ -31,8 +31,7 @@ namespace LeetCode
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
                 //string input = "abcbefga";
                 //string input2 = "dbefga";
-                int[] nums2 = new int[] { 2, 1, 1, 5, 11, 5, 1, 7, 5, 6, 4, 3 };
-                int[] nums3 = new int[] { 10, 15, 20 };
+                int[] nums = new int[] { 5, 7, 7, 8, 8, 10 };
                 //int[] nums1 = new int[] { 10, 1, 2, 7, 6, 1, 5 };
                 //IList<IList<int>> data = new List<IList<int>>()
                 //{
@@ -46,16 +45,65 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                var res = solution.Intersection(nums2, nums3);
+                var res = solution.SearchRange(nums, 8);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            public int[] Intersection(int[] nums1, int[] nums2)
+            public int[] SearchRange(int[] nums, int target)
             {
-                return nums1.Intersect(nums2).ToArray();
+                var res = new int[2] { -1, -1 };
+                if (nums == null || nums.Length == 0)
+                    return res;
+                //1.先二分法找到 start
+                Recurse(0, nums.Length - 1);
+                //2.1如果没有找到 target 值那就 return [-1, -1]
+                return res;
+                //2.2当找到 target 值之后开始执行找 end
+
+
+                void Recurse(int left, int right)
+                {
+                    //没有找到
+                    if (left > right)
+                        return;
+                    //二分法
+                    int mid = (left + right) / 2;
+                    if (nums[mid] == target)
+                        FindStartAndEnd(mid);
+                    else if (nums[mid] > target)
+                        Recurse(left, mid - 1);
+                    else
+                        Recurse(mid + 1, right);
+                }
+
+                void FindStartAndEnd(int mid)
+                {
+                    //找到起点
+                    int left = 0, right = mid;
+                    while (left <= right)
+                    {
+                        int pivot = (left + right) / 2;
+                        if (nums[pivot] >= target)
+                            right = pivot - 1;
+                        else
+                            left = pivot + 1;
+                    }
+                    res[0] = left;
+                    //找到终点
+                    left = mid; right = nums.Length - 1;
+                    while (left <= right)
+                    {
+                        int pivot = (left + right) / 2;
+                        if (nums[pivot] <= target)
+                            left = pivot + 1;
+                        else
+                            right = pivot - 1;
+                    }
+                    res[1] = right;
+                }
             }
         }
     }
