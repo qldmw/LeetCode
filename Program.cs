@@ -31,7 +31,10 @@ namespace LeetCode
                 //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
                 //string input = "abcbefga";
                 //string input2 = "dbefga";
+                //int[] nums = new int[] { 5, 7, 7, 8, 8, 10 };
+                //int num = 8;
                 int[] nums = new int[] { 5, 7, 7, 8, 8, 10 };
+                int num = 6;
                 //int[] nums1 = new int[] { 10, 1, 2, 7, 6, 1, 5 };
                 //IList<IList<int>> data = new List<IList<int>>()
                 //{
