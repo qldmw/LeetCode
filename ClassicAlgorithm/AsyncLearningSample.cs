@@ -77,11 +77,11 @@ namespace LeetCode.ClassicAlgorithm
             {
                 bool res = false;
                 //第五种，使用 async 方法。
-                //如果外层调用不使用 .Result,那么会直接返回一个 Task。
+                //如果外层调用不使用 .Result，那么会直接返回一个 Task，不会执行到 return。
                 //如果外层调用使用 .Result，就会等待结果返回。
                 res = await Cost();
                 //第六种，丢弃 await 方法结果。
-                //如果外层调用不使用 .Result,那么会直接返回一个 Task。
+                //如果外层调用不使用 .Result，那么会直接返回一个 Task，不会执行到 return。
                 //如果外层调用使用 .Result，就会等待结果返回。
                 _ = await Cost();
                 //第七种，不使用 await 关键字，同步调用。
