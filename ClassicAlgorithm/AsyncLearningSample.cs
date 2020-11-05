@@ -1,54 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Extension;
-using LeetCode.ExtensionFunction;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace LeetCode
+namespace LeetCode.ClassicAlgorithm
 {
-    class Program
+    class AsyncLearningSample
     {
-        static void Main(string[] args)
-        {
-            var solution = new Solution();
-            while (true)
-            {
-                //int input = int.Parse(Console.ReadLine());
-                //int input2 = int.Parse(Console.ReadLine());
-                //int input3 = int.Parse(Console.ReadLine());
-                //string input = Console.ReadLine();
-                //string input2 = Console.ReadLine();
-                //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
-                //int input2 = int.Parse(Console.ReadLine());
-                //var builder = new DataStructureBuilder();
-                //int?[] data = new int?[] { 1, 2, 3, 4, 5, null, 6, null, null, 7, 8 };
-                //var tree = builder.BuildTree(data);
-                //var listNode = builder.BuildListNode(new int[] { 1, 4, 5 });
-                //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
-                //string input = "abcbefga";
-                //string input2 = "dbefga";
-                int[] nums = new int[] { 5, 7, 7, 8, 8, 10 };
-                //int[] nums1 = new int[] { 10, 1, 2, 7, 6, 1, 5 };
-                //IList<IList<int>> data = new List<IList<int>>()
-                //{
-                //    new List<int>() { 1, 3 },
-                //    new List<int>() { 3, 0, 1 },
-                //    new List<int>() { 2 },
-                //    new List<int>() { 0 }
+        //static void Main(string[] args)
+        //{
+        //    var solution = new Solution();
+        //    while (true)
+        //    {
+        //        //int input = int.Parse(Console.ReadLine());
+        //        //int input2 = int.Parse(Console.ReadLine());
+        //        //int input3 = int.Parse(Console.ReadLine());
+        //        //string input = Console.ReadLine();
+        //        //string input2 = Console.ReadLine();
+        //        //int[] intArr = input.Split(',').Select(s => int.Parse(s)).ToArray();
+        //        //int input2 = int.Parse(Console.ReadLine());
+        //        //var builder = new DataStructureBuilder();
+        //        //int?[] data = new int?[] { 1, 2, 3, 4, 5, null, 6, null, null, 7, 8 };
+        //        //var tree = builder.BuildTree(data);
+        //        //var listNode = builder.BuildListNode(new int[] { 1, 4, 5 });
+        //        //int[][] arr = new int[3][] { new int[] { 1, 3, 1 }, new int[] { 1, 5, 1 }, new int[] { 4, 2, 1 } };
+        //        //string input = "abcbefga";
+        //        //string input2 = "dbefga";
+        //        int[] nums = new int[] { 5, 7, 7, 8, 8, 10 };
+        //        //int[] nums1 = new int[] { 10, 1, 2, 7, 6, 1, 5 };
+        //        //IList<IList<int>> data = new List<IList<int>>()
+        //        //{
+        //        //    new List<int>() { 1, 3 },
+        //        //    new List<int>() { 3, 0, 1 },
+        //        //    new List<int>() { 2 },
+        //        //    new List<int>() { 0 }
 
-                //    //new List<int>() { 1 },
-                //    //new List<int>() { 2 },
-                //    //new List<int>() { 3 },
-                //    //new List<int>() {  }
-                //};
-                var res = solution.AsyncSample().Result;
-                ConsoleX.WriteLine(res);
-            }
-        }
+        //        //    //new List<int>() { 1 },
+        //        //    //new List<int>() { 2 },
+        //        //    //new List<int>() { 3 },
+        //        //    //new List<int>() {  }
+        //        //};
+        //        var res = solution.TestForDiscardAsyncResult();
+        //        ConsoleX.WriteLine(res);
+        //    }
+        //}
 
         public class Solution
         {
@@ -67,11 +63,11 @@ namespace LeetCode
 
                 async Task<bool> Cost()
                 {
-                    bool res = await Task.Run(() => { 
-                        Console.WriteLine("In the task"); 
+                    bool res = await Task.Run(() => {
+                        Console.WriteLine("In the task");
                         Thread.Sleep(10 * 1000);
                         Console.WriteLine("In the task, after 10 seconds");
-                        return true; 
+                        return true;
                     });
                     return res;
                 }
