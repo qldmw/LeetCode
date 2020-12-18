@@ -45,131 +45,30 @@ namespace LeetCode
                 //    //new List<int>() {  }
                 //};
                 string str1 = "hit";
-                string str2 = "cog";
-                IList<string> strList = new List<string>() { "hot", "dot", "dog", "lot", "log", "cog" };
-                var res = solution.LadderLength(str1, str2, strList);
+                string str2 = "hiit";
+                var res = solution.FindTheDifference(str1, str2);
                 ConsoleX.WriteLine(res);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 主动的广度优先搜索
-            /// 时间复杂度：O(n * wordLen)
-            /// 空间复杂度：O(n)
-            /// 还可以双向搜索，大幅减小时间。不过一直搞烦了，留待以后来做。。。 99.999999%不会再做了
-            /// </summary>
-            /// <param name="beginWord"></param>
-            /// <param name="endWord"></param>
-            /// <param name="wordList"></param>
-            /// <returns></returns>
-            public int LadderLength(string beginWord, string endWord, IList<string> wordList)
+            public char FindTheDifference(string s, string t)
             {
-                HashSet<string> hash = wordList.ToHashSet();
-                //所有满足条件的候选单词
-                Queue<string> candidate = new Queue<string>();
-                //当前的代数中有多少个候选单词
-                int currentGenerationCount;
-                //广度优先的代数
-                int generation = 1;
-                candidate.Enqueue(beginWord);
-                //始终有候选人，而且没有超出整个wordList的长度，因为超出了的话一定成环了。
-                while (candidate.Count > 0)
+                Dictionary<char, int> alphabet = new Dictionary<char, int>();
+                foreach (char c in s)
                 {
-                    currentGenerationCount = candidate.Count;
-                    while (currentGenerationCount-- > 0)
-                    {
-                        var curr = candidate.Dequeue();
-                        //标记当前string已经走过了
-                        hash.Remove(curr);
-                        if (curr == endWord)
-                            return generation;
-                        //相较于第一反应的被动DFS，改为主动DFS
-                        for (int i = 0; i < curr.Length; i++)
-                        {
-                            PositiveSearch(curr, i);
-                        }
-                    }
-                    generation++;
+                    alphabet[c]++;
                 }
-                return 0;
-
-                void PositiveSearch(string source, int index)
+                foreach (char c in t)
                 {
-                    for (char j = 'a'; j <= 'z'; j++)
-                    {
-                        var temp = source.ToArray();
-                        temp[index] = j;
-                        string tempStr = new string(temp);
-                        //主动找到了就入队
-                        if (hash.Contains(tempStr))
-                        {
-                            hash.Remove(tempStr);
-                            candidate.Enqueue(tempStr);
-                        }
-                    }
+                    if (alphabet[c] <= 0)
+                        return c;
+                    else
+                        alphabet[c]--;
                 }
+                return t[0];
             }
-
-
-            ///// <summary>
-            ///// 第一反应解，广度优先，但是是通过每个单词对比实现的，感觉是一种被动的搜索，所以超时了
-            ///// 时间复杂度：O(n * wordLen)
-            ///// 空间复杂度：O(n)
-            ///// </summary>
-            ///// <param name="beginWord"></param>
-            ///// <param name="endWord"></param>
-            ///// <param name="wordList"></param>
-            ///// <returns></returns>
-            //public int LadderLength(string beginWord, string endWord, IList<string> wordList)
-            //{
-            //    HashSet<string> hash = wordList.ToHashSet();
-            //    //所有满足条件的候选单词
-            //    Queue<string> candidate = new Queue<string>();
-            //    //当前的代数中有多少个候选单词
-            //    int currentGenerationCount;
-            //    //广度优先的代数
-            //    int generation = 1;
-            //    candidate.Enqueue(beginWord);
-            //    //始终有候选人，而且没有超出整个wordList的长度，因为超出了的话一定成环了。
-            //    while (candidate.Count > 0)
-            //    {
-            //        currentGenerationCount = candidate.Count;
-            //        while (currentGenerationCount-- > 0)
-            //        {
-            //            var curr = candidate.Dequeue();
-            //            //标记当前string已经走过了
-            //            hash.Remove(curr);
-            //            if (curr == endWord)
-            //                return generation;
-            //            foreach (string m in hash)
-            //            {
-            //                //只相差一个字符，而且没有走过
-            //                if (IsOnlyOneCharacterDifferent(curr, m))
-            //                    candidate.Enqueue(m);
-            //            }
-            //        }
-            //        generation++;
-            //    }
-            //    return 0;
-            //}
-
-            //private bool IsOnlyOneCharacterDifferent(string target, string source)
-            //{
-            //    int diffCount = 0;
-            //    for (int i = 0; i < target.Length; i++)
-            //    {
-            //        if (target[i] == source[i])
-            //            continue;
-            //        else
-            //            diffCount++;
-
-            //        if (diffCount > 1)
-            //            break;
-            //    }
-            //    return diffCount == 1;
-            //}
         }
     }
 }
