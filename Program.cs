@@ -45,10 +45,7 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-
-                int[] nums1 = new int[] { 10, 9, 8, 7, 10, 9, 8, 7 };
-                int[] nums2 = new int[] { 10, 9, 8, 7 };
-                var res = solution.FindContentChildren(nums1, nums2);
+                var res = solution.IsValidSudoku();
                 ConsoleX.WriteLine(res);
             }
         }
@@ -56,47 +53,47 @@ namespace LeetCode
         public class Solution
         {
             /// <summary>
-            /// 贪心思路+二分查找实现(哦，不对，其实不用做二分，二分反而会耗时更久，因为正常一个一个找，遍历一次就解决了！干！)
-            /// 时间复杂度：O(nlogn)，sort是nlogn，二分查找是logn。
-            /// 空间复杂度：O(logn)，Array.Sort应该是使用的快排，那就是堆深度，logn。
+            /// 数组代替hashset完成，巧妙利用下标
+            /// 时间复杂度：O(1)，常数
+            /// 空间复杂度：O(1)，常数
+            /// 其实考察的是HashSet，不过可以利用数组的特性来解决，更节省空间。
             /// </summary>
-            /// <param name="g"></param>
-            /// <param name="s"></param>
+            /// <param name="board"></param>
             /// <returns></returns>
-            public int FindContentChildren(int[] g, int[] s)
+            public bool IsValidSudoku(char[][] board)
             {
-                Array.Sort(g);
-                Array.Sort(s);
-                int satisfiedCount = 0;
-                int sIndex = 0;
-                foreach (int m in g)
+                //记录是否来过
+                bool[,] cols = new bool[9, 9];
+                bool[,] rows = new bool[9, 9];
+                bool[,] boxs = new bool[9, 9];
+                for (int i = 0; i < 9; i++)
                 {
-                    //二分法是排序后的最优解，比一个一个遍历在理论上快，当然要数目大了之后才能显现
-                    if (!BinarySearch(m, s, sIndex, s.Length - 1))
-                        break;
-                }
-                return satisfiedCount;
-
-                bool BinarySearch(int target, int[] s, int left, int right)
-                {
-                    while (left <= right)
+                    for (int j = 0; j < 9; j++)
                     {
-                        int mid = (left + right) / 2;
-                        //这里的判断很细节，要判断是否刚好比上一个小，然后又要比这个大，然后还要考虑上次的边界值
-                        if (s[mid] >= target && (mid - 1 < sIndex || s[mid - 1] < target))
-                        {
-                            satisfiedCount++;
-                            sIndex = mid + 1;
-                            return true;
-                        }
+                        if (board[i][j] == '.')
+                            continue;
 
-                        if (s[mid] >= target)
-                            right = mid - 1;
+                        int num = board[i][j] - '0' - 1;
+                        //校验行
+                        if (!cols[i, num])
+                            cols[i, num] = true; 
                         else
-                            left = mid + 1;
+                            return false;
+                        //校验列
+                        if (!rows[j, num])
+                            rows[j, num] = true;
+                        else
+                            return false;
+                        //校验区
+                        //这里是这道题最难的一点，计算出当前的box序号。其实 i 和 j 无关顺序，因为这个矩形是对称的
+                        int boxIndex = (i / 3) * 3 + j / 3;
+                        if (!boxs[boxIndex, num])
+                            boxs[boxIndex, num] = true;
+                        else
+                            return false;
                     }
-                    return false;
                 }
+                return true;
             }
         }
     }
