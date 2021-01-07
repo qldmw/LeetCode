@@ -45,7 +45,8 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                var res = solution.IsValidSudoku();
+                int[][] arr = new int[4][] { new int[] { 1, 0, 0, 1 }, new int[] { 0, 1, 1, 0 }, new int[] { 0, 1, 1, 1 }, new int[] { 1, 0, 1, 1 }};
+                var res = solution.FindCircleNum(arr);
                 ConsoleX.WriteLine(res);
             }
         }
@@ -53,47 +54,42 @@ namespace LeetCode
         public class Solution
         {
             /// <summary>
-            /// 数组代替hashset完成，巧妙利用下标
-            /// 时间复杂度：O(1)，常数
-            /// 空间复杂度：O(1)，常数
-            /// 其实考察的是HashSet，不过可以利用数组的特性来解决，更节省空间。
+            /// 深度优先搜索
+            /// 设 isConnected.Length 为 n
+            /// 时间复杂度：O(n), 所有的点走一遍就可以了
+            /// 空间复杂度：O(n), 路径的记录是 n, 然后递归的栈空间最大 n,最小 1。
             /// </summary>
-            /// <param name="board"></param>
+            /// <param name="isConnected"></param>
             /// <returns></returns>
-            public bool IsValidSudoku(char[][] board)
+            public int FindCircleNum(int[][] isConnected)
             {
-                //记录是否来过
-                bool[,] cols = new bool[9, 9];
-                bool[,] rows = new bool[9, 9];
-                bool[,] boxs = new bool[9, 9];
-                for (int i = 0; i < 9; i++)
+                //所有走过的路径
+                var paths = new HashSet<int>();
+                int res = 0;
+                for (int i = 0; i < isConnected.Length; i++)
                 {
-                    for (int j = 0; j < 9; j++)
-                    {
-                        if (board[i][j] == '.')
-                            continue;
-
-                        int num = board[i][j] - '0' - 1;
-                        //校验行
-                        if (!cols[i, num])
-                            cols[i, num] = true; 
-                        else
-                            return false;
-                        //校验列
-                        if (!rows[j, num])
-                            rows[j, num] = true;
-                        else
-                            return false;
-                        //校验区
-                        //这里是这道题最难的一点，计算出当前的box序号。其实 i 和 j 无关顺序，因为这个矩形是对称的
-                        int boxIndex = (i / 3) * 3 + j / 3;
-                        if (!boxs[boxIndex, num])
-                            boxs[boxIndex, num] = true;
-                        else
-                            return false;
-                    }
+                    if (DFS(i))
+                        res++;
                 }
-                return true;
+                return res;
+
+                //一直往后找。（错误思想！比如 1 连到 4，然后 4 又连到 3，3又连到其他。这种情况是要向前的）
+                bool DFS(int index)
+                {
+                    //如果已经连接过了则返回，否则加入到走过的路径中
+                    if (paths.Contains(index))
+                        return false;
+                    else
+                        paths.Add(index);
+                    //搜索该点能连接的所有点
+                    for (int i = 0; i < isConnected.Length; i++)
+                    {
+                        int isConnect = isConnected[index][i];
+                        if (isConnect == 1)
+                            DFS(i);
+                    }
+                    return true;
+                }
             }
         }
     }
