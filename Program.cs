@@ -45,51 +45,112 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                int[][] arr = new int[4][] { new int[] { 1, 0, 0, 1 }, new int[] { 0, 1, 1, 0 }, new int[] { 0, 1, 1, 1 }, new int[] { 1, 0, 1, 1 }};
-                var res = solution.FindCircleNum(arr);
-                ConsoleX.WriteLine(res);
+                var arr = new char[][] { 
+                    new char[] { '5','3','.','.','7','.','.','.','.' },
+                    new char[] { '6','.','.','1','9','5','.','.','.' },
+                    new char[] { '.','9','8','.','.','.','.','6','.' },
+                    new char[] { '8','.','.','.','6','.','.','.','3' },
+                    new char[] { '4','.','.','8','.','3','.','.','1' },
+                    new char[] { '7','.','.','.','2','.','.','.','6' },
+                    new char[] { '.','6','.','.','.','.','2','8','.' },
+                    new char[] { '.','.','.','4','1','9','.','.','5' },
+                    new char[] { '.','.','.','.','8','.','.','7','9' },
+                };
+                solution.SolveSudoku(arr);
+                ConsoleX.WriteLine(arr);
             }
         }
 
         public class Solution
         {
-            /// <summary>
-            /// 深度优先搜索
-            /// 设 isConnected.Length 为 n
-            /// 时间复杂度：O(n), 所有的点走一遍就可以了
-            /// 空间复杂度：O(n), 路径的记录是 n, 然后递归的栈空间最大 n,最小 1。
-            /// </summary>
-            /// <param name="isConnected"></param>
-            /// <returns></returns>
-            public int FindCircleNum(int[][] isConnected)
-            {
-                //所有走过的路径
-                var paths = new HashSet<int>();
-                int res = 0;
-                for (int i = 0; i < isConnected.Length; i++)
-                {
-                    if (DFS(i))
-                        res++;
-                }
-                return res;
+            //九宫格的可用数字
+            private List<List<int>> _blocks = new List<List<int>>();
+            //列的可用数字
+            private List<List<int>> _cols = new List<List<int>>();
+            //行的可用数字
+            private List<List<int>> _rows = new List<List<int>>();
+            //可填的空格,第一个代表 x,第二个代表 y
+            private List<(int, int)> _candidates = new List<(int, int)>();
 
-                //一直往后找。（错误思想！比如 1 连到 4，然后 4 又连到 3，3又连到其他。这种情况是要向前的）
-                bool DFS(int index)
+            private void _ScanForInitialData(char[][] board)
+            {
+                //快速初始化带默认值的数组
+                var existBlocks = Enumerable.Range(0, 9).Select(s => new HashSet<int>()).ToList();
+                var existCols = Enumerable.Range(0, 9).Select(s => new HashSet<int>()).ToList();
+                var existRows = Enumerable.Range(0, 9).Select(s => new HashSet<int>()).ToList();
+                for (int x = 0; x < 9; x++)
                 {
-                    //如果已经连接过了则返回，否则加入到走过的路径中
-                    if (paths.Contains(index))
-                        return false;
-                    else
-                        paths.Add(index);
-                    //搜索该点能连接的所有点
-                    for (int i = 0; i < isConnected.Length; i++)
+                    for (int y = 0; y < 9; y++)
                     {
-                        int isConnect = isConnected[index][i];
-                        if (isConnect == 1)
-                            DFS(i);
+                        if (board[x][y] == '.')
+                            _candidates.Add((x, y));
+                        else
+                        {
+                            existCols[y].Add(board[x][y] - '0');
+                            existRows[x].Add(board[x][y] - '0');
+                            int blockIndex = (y / 3) * 3 + x / 3;
+                            existBlocks[blockIndex].Add(board[x][y] - '0');
+                        }
                     }
-                    return true;
                 }
+                //通过已经存在的，反选出可用的数字
+                foreach (var block in existBlocks)
+                {
+                    var temp = new List<int>();
+                    for (int i = 1; i <= 9; i++)
+                    {
+                        if (!block.Contains(i))
+                            temp.Add(i);
+                    }
+                    _blocks.Add(temp);
+                }
+                foreach (var col in existCols)
+                {
+                    var temp = new List<int>();
+                    for (int i = 1; i <= 9; i++)
+                    {
+                        if (!col.Contains(i))
+                            temp.Add(i);
+                    }
+                    _cols.Add(temp);
+                }
+                foreach (var row in existRows)
+                {
+                    var temp = new List<int>();
+                    for (int i = 1; i <= 9; i++)
+                    {
+                        if (!row.Contains(i))
+                            temp.Add(i);
+                    }
+                    _rows.Add(temp);
+                }
+            }
+
+            public void SolveSudoku(char[][] board)
+            {
+                _ScanForInitialData(board);
+                for (int i = 0; i < _candidates.Count; i++)
+                {
+                    if (!StepForeward(_candidates[i].Item1, _candidates[i].Item2))
+                    {
+
+                    }
+                }
+            }
+
+            private void InsertNumber()
+            {
+
+            }
+
+            private bool StepForeward(int x, int y)
+            {
+
+            }
+
+            private bool StepBack(int x, int y)
+            {
+
             }
         }
     }
