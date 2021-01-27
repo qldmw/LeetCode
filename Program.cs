@@ -61,6 +61,9 @@ namespace LeetCode
             }
         }
 
+        /// <summary>
+        /// 这道题给我的感觉更多的是在考察工程化思想，因为原理不复杂，但怎么样写出可读性高的优雅的代码却不容易。
+        /// </summary>
         public class Solution
         {
             //九宫格的可用数字
@@ -71,8 +74,10 @@ namespace LeetCode
             private List<List<int>> _rows = new List<List<int>>();
             //可填的空格,第一个代表 x,第二个代表 y
             private List<(int, int)> _candidates = new List<(int, int)>();
+            //转存为私有属性
+            private char[][] _board;
 
-            private void _ScanForInitialData(char[][] board)
+            private void _ScanForInitialData()
             {
                 //快速初始化带默认值的数组
                 var existBlocks = Enumerable.Range(0, 9).Select(s => new HashSet<int>()).ToList();
@@ -82,14 +87,14 @@ namespace LeetCode
                 {
                     for (int y = 0; y < 9; y++)
                     {
-                        if (board[x][y] == '.')
+                        if (_board[x][y] == '.')
                             _candidates.Add((x, y));
                         else
                         {
-                            existCols[y].Add(board[x][y] - '0');
-                            existRows[x].Add(board[x][y] - '0');
+                            existCols[y].Add(_board[x][y] - '0');
+                            existRows[x].Add(_board[x][y] - '0');
                             int blockIndex = (y / 3) * 3 + x / 3;
-                            existBlocks[blockIndex].Add(board[x][y] - '0');
+                            existBlocks[blockIndex].Add(_board[x][y] - '0');
                         }
                     }
                 }
@@ -128,29 +133,58 @@ namespace LeetCode
 
             public void SolveSudoku(char[][] board)
             {
-                _ScanForInitialData(board);
+                _board = board;
+                _ScanForInitialData();
                 for (int i = 0; i < _candidates.Count; i++)
                 {
-                    if (!StepForeward(_candidates[i].Item1, _candidates[i].Item2))
+                    //如果是点则直接从最小的插入，如果已经有数字了，就从大于数字的最小一个开始插入
+                    if (!TryInsertNumber(_candidates[i].Item1, _candidates[i].Item2))
                     {
-
+                        //如果无法插入数字了，则回退到前一个
+                        i -= 2;
                     }
                 }
             }
 
-            private void InsertNumber()
+            private bool TryInsertNumber(int x, int y)
             {
+                char value = _board[x][y];
+                //通过可用的行列块数字，找到最终可用的集合
+                List<int> col = _cols[y], row = _rows[x], block = _blocks[(y / 3) * 3 + x / 3];
+                //如果之前这个位置就有数字，则置为 '.'，并把该数字放回到可用合集中
+                if (value != '.')
+                {
+                    _board[x][y] = '.';
+                    __AddNumToColRowBlock(value - '0');
+                }
+                //这里用到了一个 Intersect 方法，是 IEnumerable 取并集的方法。和 except 相反，except 是差集的。
+                var availableNums = col.Intersect(row).Intersect(block);
+                //orderBy是因为回溯加入可用集合时会乱序
+                foreach (var num in availableNums.OrderBy(s => s))
+                {
+                    if (num > value - '0')
+                    {
+                        _board[x][y] = (char)(num + '0');
+                        //使用数字之后，就从可用合集中去除该数字
+                        __RemoveNumFromColRowBlock(num);
+                        return true;
+                    }
+                }
+                return false;
 
-            }
+                void __RemoveNumFromColRowBlock(int num)
+                {
+                    col.Remove(num);
+                    row.Remove(num);
+                    block.Remove(num);
+                }
 
-            private bool StepForeward(int x, int y)
-            {
-
-            }
-
-            private bool StepBack(int x, int y)
-            {
-
+                void __AddNumToColRowBlock(int num)
+                {
+                    col.Add(num);
+                    row.Add(num);
+                    block.Add(num);
+                }
             }
         }
     }
