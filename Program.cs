@@ -45,7 +45,7 @@ namespace LeetCode
                 //    //new List<int>() { 3 },
                 //    //new List<int>() {  }
                 //};
-                var arr = new char[][] { 
+                var arr = new char[][] {
                     new char[] { '5','3','.','.','7','.','.','.','.' },
                     new char[] { '6','.','.','1','9','5','.','.','.' },
                     new char[] { '.','9','8','.','.','.','.','6','.' },
@@ -56,6 +56,17 @@ namespace LeetCode
                     new char[] { '.','.','.','4','1','9','.','.','5' },
                     new char[] { '.','.','.','.','8','.','.','7','9' },
                 };
+                //var hardestSudoku = new char[][] {
+                //    new char[] { '8','.','.','.','.','.','.','.','.' },
+                //    new char[] { '.','.','3','6','.','.','.','.','.' },
+                //    new char[] { '.','7','.','.','9','.','2','.','.' },
+                //    new char[] { '.','5','.','.','.','7','.','.','.' },
+                //    new char[] { '.','.','.','.','4','5','7','.','.' },
+                //    new char[] { '.','.','.','1','.','.','.','3','.' },
+                //    new char[] { '.','.','1','.','.','.','.','6','8' },
+                //    new char[] { '.','.','8','5','.','.','.','1','.' },
+                //    new char[] { '.','9','.','.','.','.','4','.','.' },
+                //};
                 solution.SolveSudoku(arr);
                 ConsoleX.WriteLine(arr);
             }
@@ -133,6 +144,7 @@ namespace LeetCode
 
             public void SolveSudoku(char[][] board)
             {
+                int stepbackCount = 0;
                 _board = board;
                 _ScanForInitialData();
                 for (int i = 0; i < _candidates.Count; i++)
@@ -142,6 +154,7 @@ namespace LeetCode
                     {
                         //如果无法插入数字了，则回退到前一个
                         i -= 2;
+                        Console.WriteLine(++stepbackCount);
                     }
                 }
             }
