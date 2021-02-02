@@ -71,20 +71,20 @@ namespace LeetCode_455
                 }
                 return satisfiedCount;
 
-                bool BinarySearch(int target, int[] s, int left, int right)
+                bool BinarySearch(int target, int[] str, int left, int right)
                 {
                     while (left <= right)
                     {
                         int mid = (left + right) / 2;
                         //这里的判断很细节，要判断是否刚好比上一个小，然后又要比这个大，然后还要考虑上次的边界值
-                        if (s[mid] >= target && (mid - 1 < sIndex || s[mid - 1] < target))
+                        if (str[mid] >= target && (mid - 1 < sIndex || str[mid - 1] < target))
                         {
                             satisfiedCount++;
                             sIndex = mid + 1;
                             return true;
                         }
 
-                        if (s[mid] >= target)
+                        if (str[mid] >= target)
                             right = mid - 1;
                         else
                             left = mid + 1;

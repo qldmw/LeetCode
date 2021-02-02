@@ -63,13 +63,13 @@ namespace LeetCode.ClassicAlgorithm
 
                 async Task<bool> Cost()
                 {
-                    bool res = await Task.Run(() => {
+                    bool innerRes = await Task.Run(() => {
                         Console.WriteLine("In the task");
                         Thread.Sleep(10 * 1000);
                         Console.WriteLine("In the task, after 10 seconds");
                         return true;
                     });
-                    return res;
+                    return innerRes;
                 }
             }
 
@@ -96,13 +96,13 @@ namespace LeetCode.ClassicAlgorithm
 
                 async Task<bool> Cost()
                 {
-                    bool res = await Task.Run(() => {
+                    bool innerRes = await Task.Run(() => {
                         Console.WriteLine("In the task");
                         Thread.Sleep(10 * 1000);
                         Console.WriteLine("In the task, after 10 seconds");
                         return true;
                     });
-                    return res;
+                    return innerRes;
                 }
             }
         }
